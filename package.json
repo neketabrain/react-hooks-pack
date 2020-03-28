@@ -23,8 +23,8 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc",
-    "deploy": "npm run build && npm publish --access public",
+    "build": "npm run clean && tsc",
+    "deploy": "npm run build && npm publish",
     "lint": "eslint --cache src/**/*.{js,ts,jsx,tsx}"
   },
   "peerDependencies": {
