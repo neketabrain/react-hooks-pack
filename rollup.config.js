@@ -1,10 +1,14 @@
 import path from "path";
 
-import pkg from "./package.json";
-
 import typescript from "rollup-plugin-typescript2";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+
+import pkg from "./package.json";
+
+const globals = {
+  react: "react",
+};
 
 export default {
   input: path.resolve(__dirname, "src", "index.ts"),
@@ -12,29 +16,38 @@ export default {
     {
       file: pkg.main,
       format: "cjs",
+      sourcemap: true,
+      globals,
     },
     {
       file: pkg.module,
       format: "es",
+      sourcemap: true,
+      globals,
     },
     {
-      file: pkg.browser,
-      format: "iife",
       name: "ReactHooksPack",
+      file: pkg.browser,
+      format: "umd",
+      sourcemap: true,
+      globals,
     },
   ],
-  external: [
-    ...Object.keys(pkg.dependencies || {}),
-    ...Object.keys(pkg.peerDependencies || {}),
-  ],
   plugins: [
-    nodeResolve(),
+    nodeResolve({
+      customResolveOptions: {
+        moduleDirectory: "node_modules",
+      },
+    }),
+    commonjs({
+      include: "node_modules/**",
+    }),
     typescript({
       typescript: require("typescript"),
       tsconfig: path.resolve(__dirname, "tsconfig.json"),
       clean: true,
       rollupCommonJSResolveHack: true,
     }),
-    commonjs(),
   ],
+  external: ["react", "react-dom"],
 };
