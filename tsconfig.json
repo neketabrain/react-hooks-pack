@@ -20,7 +20,7 @@
     "allowJs": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "sourceMap": true
