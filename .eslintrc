@@ -31,6 +31,7 @@
     "quotes": ["error", "double"],
     "import/extensions": "off",
     "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/interface-name-prefix": [
       "error",
