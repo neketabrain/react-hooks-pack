@@ -1,1 +1,5 @@
-export { default as useForm } from "./useForm";
+import useForm from "./useForm";
+
+export default {
+  useForm,
+};

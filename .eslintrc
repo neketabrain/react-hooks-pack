@@ -20,12 +20,17 @@
   },
   "plugins": ["@typescript-eslint"],
   "extends": [
+    "airbnb-base",
     "eslint:recommended",
+    "plugin:prettier/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
   "rules": {
+    "quotes": ["error", "double"],
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/interface-name-prefix": [
       "error",
