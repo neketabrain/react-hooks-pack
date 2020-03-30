@@ -1,10 +1,11 @@
 import { useReducer, Reducer, ChangeEvent } from "react";
 
 type Event = ChangeEvent<HTMLInputElement>;
+type ValueTypes = string | string[] | number | boolean | undefined;
 
 interface InputValue {
-  value: any;
-  validate?(value: any): any;
+  value: ValueTypes;
+  validate?(value: ValueTypes): ValueTypes;
 }
 
 interface InitialState {
@@ -17,27 +18,19 @@ interface FormState {
 
 interface FormAction {
   name: string;
-  value: any;
-  type?: string;
-  checked?: boolean;
+  value: ValueTypes;
 }
 
 function parseState(state: InitialState): FormState {
   return Object.keys(state).reduce((acc: FormState, key: string) => {
     acc[key] = state[key].value;
+
     return acc;
   }, {});
 }
 
 function reducer(state: FormState, action: FormAction): FormState {
-  const { name, value, type, checked } = action;
-
-  if (type === "checkbox") {
-    return {
-      ...state,
-      [name]: checked,
-    };
-  }
+  const { name, value } = action;
 
   return {
     ...state,
@@ -55,15 +48,19 @@ function useForm(
   );
 
   function onChange(event: Event): void {
-    const target = event?.currentTarget || event?.target;
-    if (!target?.name) return;
+    const target = event?.currentTarget || event?.target || {};
+    const { name, value, type, checked } = target;
 
-    const validator = initialState?.[target.name]?.validate;
+    if (!name) return;
+
+    const inputValue = type === "checkbox" ? checked : value;
+    const validator = initialState[name]?.validate;
+
     if (validator) {
-      const validValue = validator(target.value);
-      dispatch({ ...target, value: validValue });
+      const validValue = validator(inputValue);
+      dispatch({ name, value: validValue });
     } else {
-      dispatch(target);
+      dispatch({ name, value: inputValue });
     }
   }
 
