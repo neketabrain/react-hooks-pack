@@ -1,11 +1,15 @@
 module.exports = {
   preset: "ts-jest",
-  roots: ["<rootDir>/src"],
-  testEnvironment: "node",
+  setupFilesAfterEnv: ["jest-enzyme"],
+  testEnvironment: "enzyme",
+  testEnvironmentOptions: {
+    enzymeAdapter: "react16",
+  },
+  roots: ["./src"],
+  moduleFileExtensions: ["ts", "tsx", "js"],
+  testPathIgnorePatterns: ["node_modules/"],
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  setupFilesAfterEnv: ["<rootDir>/enzyme.config.js"],
+  testMatch: ["**/*.test.(ts|tsx)"],
 };
