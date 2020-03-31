@@ -1,35 +1,34 @@
 import { useReducer, Reducer, ChangeEvent } from "react";
 
 type Event = ChangeEvent<HTMLInputElement>;
-type ValueTypes = string | string[] | number | boolean | undefined;
+type Value = string | string[] | number | boolean | undefined;
 
-interface InputValue {
-  value: ValueTypes;
-  validate?(value: ValueTypes): ValueTypes;
+interface Input {
+  name: string;
+  value: Value;
+  validate?(value: Value): Value;
 }
 
-interface InitialState {
-  [key: string]: InputValue;
-}
-
-interface FormState {
+interface State {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
-interface FormAction {
+interface Action {
   name: string;
-  value: ValueTypes;
+  value: Value;
 }
 
-function parseState(state: InitialState): FormState {
-  return Object.keys(state).reduce((acc: FormState, key: string) => {
-    acc[key] = state[key].value;
+function formatState(state: Input[]): State {
+  return state.reduce((acc: State, input: Input) => {
+    const { name, value } = input;
+    acc[name] = value === undefined ? "" : value;
 
     return acc;
   }, {});
 }
 
-function reducer(state: FormState, action: FormAction): FormState {
+function reducer(state: State, action: Action): State {
   const { name, value } = action;
 
   return {
@@ -38,13 +37,23 @@ function reducer(state: FormState, action: FormAction): FormState {
   };
 }
 
-function useForm(
-  initialState: InitialState
-): [FormState, (event: Event) => void] {
-  const parsedState = parseState(initialState);
-  const [state, dispatch] = useReducer<Reducer<FormState, FormAction>>(
+function useForm(initialState: Input[]): [State, (event: Event) => void] {
+  if (!initialState) {
+    throw new Error(
+      "Initial state is required. See: https://github.com/neketabrain/react-hooks-pack#useforminitialstate"
+    );
+  }
+
+  if (!Array.isArray(initialState)) {
+    throw new Error(
+      "Initial state must be an array. See: https://github.com/neketabrain/react-hooks-pack#useforminitialstate"
+    );
+  }
+
+  const formattedState = formatState(initialState);
+  const [state, dispatch] = useReducer<Reducer<State, Action>>(
     reducer,
-    parsedState
+    formattedState
   );
 
   function onChange(event: Event): void {
@@ -53,14 +62,16 @@ function useForm(
 
     if (!name) return;
 
-    const inputValue = type === "checkbox" ? checked : value;
-    const validator = initialState[name]?.validate;
+    const newValue = type === "checkbox" ? checked : value;
+    const validator = initialState.find(
+      ({ name: inputName }) => inputName === name
+    )?.validate;
 
     if (validator) {
-      const validValue = validator(inputValue);
+      const validValue = validator(newValue);
       dispatch({ name, value: validValue });
     } else {
-      dispatch({ name, value: inputValue });
+      dispatch({ name, value: newValue });
     }
   }
 

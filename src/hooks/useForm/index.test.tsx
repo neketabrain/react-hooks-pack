@@ -3,13 +3,63 @@ import { shallow } from "enzyme";
 
 import useForm from "./index";
 
+describe("Testing useForm", () => {
+  it("With undefined initial value is working", () => {
+    const initialState = [
+      {
+        name: "text",
+      },
+    ];
+    const Component = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const [form, onChange] = useForm(initialState as any);
+      return (
+        <input type="text" name="text" value={form.text} onChange={onChange} />
+      );
+    };
+
+    const component = shallow(<Component />);
+    expect(component.find("input").prop("value")).toBe("");
+  });
+
+  it("Error should be thrown if initial state is undefined", () => {
+    const initialState = undefined;
+    const Component = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const [form, onChange] = useForm(initialState as any);
+      return (
+        <input type="text" name="text" value={form.text} onChange={onChange} />
+      );
+    };
+
+    expect(() => shallow(<Component />)).toThrowError();
+  });
+
+  it("Error should be thrown if initial state is not array", () => {
+    const initialState = {
+      name: "text",
+      value: "",
+    };
+    const Component = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const [form, onChange] = useForm(initialState as any);
+      return (
+        <input type="text" name="text" value={form.text} onChange={onChange} />
+      );
+    };
+
+    expect(() => shallow(<Component />)).toThrowError();
+  });
+});
+
 describe("Testing text input", () => {
   it("Initial value is working", () => {
-    const initialState = {
-      text: {
+    const initialState = [
+      {
+        name: "text",
         value: "Hello world!",
       },
-    };
+    ];
     const Component = () => {
       const [form, onChange] = useForm(initialState);
       return (
@@ -22,11 +72,12 @@ describe("Testing text input", () => {
   });
 
   it("onChange function is working", () => {
-    const initialState = {
-      text: {
+    const initialState = [
+      {
+        name: "text",
         value: "",
       },
-    };
+    ];
     const Component = () => {
       const [form, onChange] = useForm(initialState);
       return (
@@ -44,12 +95,13 @@ describe("Testing text input", () => {
   });
 
   it("validate function is working", () => {
-    const initialState = {
-      text: {
+    const initialState = [
+      {
+        name: "text",
         value: "",
         validate: (val: string) => val.replace(/\D/gim, ""),
       },
-    };
+    ];
     const Component = () => {
       const [form, onChange] = useForm(initialState);
       return (
@@ -69,11 +121,12 @@ describe("Testing text input", () => {
 
 describe("Testing checkbox input", () => {
   it("Initial value is working", () => {
-    const initialState = {
-      checkbox: {
+    const initialState = [
+      {
+        name: "checkbox",
         value: true,
       },
-    };
+    ];
     const Component = () => {
       const [form, onChange] = useForm(initialState);
       return (
@@ -91,11 +144,12 @@ describe("Testing checkbox input", () => {
   });
 
   it("onChange function is working", () => {
-    const initialState = {
-      checkbox: {
+    const initialState = [
+      {
+        name: "checkbox",
         value: true,
       },
-    };
+    ];
     const Component = () => {
       const [form, onChange] = useForm(initialState);
       return (
@@ -120,14 +174,16 @@ describe("Testing checkbox input", () => {
 
 describe("Testing multiple inputs", () => {
   it("Initial value is working", () => {
-    const initialState = {
-      text: {
+    const initialState = [
+      {
+        name: "text",
         value: "Hello world!",
       },
-      checkbox: {
+      {
+        name: "checkbox",
         value: true,
       },
-    };
+    ];
     const Component = () => {
       const [form, onChange] = useForm(initialState);
       return (
@@ -154,14 +210,16 @@ describe("Testing multiple inputs", () => {
   });
 
   it("onChange function is working", () => {
-    const initialState = {
-      text: {
+    const initialState = [
+      {
+        name: "text",
         value: "",
       },
-      checkbox: {
+      {
+        name: "checkbox",
         value: true,
       },
-    };
+    ];
     const Component = () => {
       const [form, onChange] = useForm(initialState);
       return (
@@ -203,15 +261,17 @@ describe("Testing multiple inputs", () => {
   });
 
   it("validate function is working", () => {
-    const initialState = {
-      text: {
+    const initialState = [
+      {
+        name: "text",
         value: "",
         validate: (val: string) => val.replace(/\D/gim, ""),
       },
-      checkbox: {
+      {
+        name: "checkbox",
         value: true,
       },
-    };
+    ];
     const Component = () => {
       const [form, onChange] = useForm(initialState);
       return (
