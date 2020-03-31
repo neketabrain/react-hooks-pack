@@ -6,7 +6,8 @@
     "es2020": true
   },
   "parserOptions": {
-    "project": "./tsconfig.json",
+    "project": "./tsconfig.eslint.json",
+    "createDefaultProgram": true,
     "sourceType": "module",
     "ecmaVersion": 2020,
     "ecmaFeatures": {
@@ -30,6 +31,7 @@
   "rules": {
     "quotes": ["error", "double"],
     "consistent-return": "off",
+    "global-require": "off",
     "import/extensions": "off",
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
