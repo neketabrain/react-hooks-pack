@@ -21,9 +21,9 @@ yarn add react-hooks-pack
 ## Hooks
 
 [useForm](#useforminitialstate) - makes it easier to work with form\
-[useTimer](#usetimerconfig)\
-[useForceUpdate](#useforceupdate)\
-[useWindowSize](#usewindowsize)
+[useWindowSize](#usewindowsize) - return window width and height\
+[useForceUpdate](#useforceupdate) - call force re-render (not recommended)\
+[useTimer](#usetimerconfig) - incremental and decremental timer
 
 <br />
 
@@ -59,7 +59,7 @@ function App() {
 }
 ```
 
-#### Configuration
+##### Configuration
 
 The configuration is required and must be an array
 
@@ -75,18 +75,50 @@ const initialState = [
 
 <br />
 
-### `useTimer(config?)`
-
-Work in progress
-
-<br />
-
 ### `useForceUpdate()`
 
-Work in progress
+```typescript jsx
+import React from "react";
+import { useForceUpdate } from "react-hooks-pack";
+
+function App() {
+  const forceUpdate = useForceUpdate();
+
+  return (
+    <div>
+      <button onClick={forceUpdate}>Update</button>
+      ...
+    </div>
+  );
+}
+```
 
 <br />
 
 ### `useWindowSize()`
 
+Values will update after every window resize event
+
+```typescript jsx
+import React from "react";
+import { useWindowSize } from "react-hooks-pack";
+
+function App() {
+  const [width, height] = useWindowSize();
+
+  return (
+    <div>
+      <p>Width: {width}</p>
+      <p>Height: {height}</p>
+    </div>
+  );
+}
+```
+
+<br />
+
+### `useTimer(config?)`
+
 Work in progress
+
+<br />

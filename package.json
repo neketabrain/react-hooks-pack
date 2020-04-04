@@ -1,7 +1,7 @@
 {
   "name": "react-hooks-pack",
-  "version": "0.3.0",
-  "description": "React hooks collection",
+  "version": "0.3.1",
+  "description": "Custom React hooks package",
   "publishConfig": {
     "access": "public"
   },
