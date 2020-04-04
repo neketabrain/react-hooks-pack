@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 
 import useForm from "./index";
 
-describe("Testing useForm", () => {
+describe("Testing useForm hook", () => {
   it("With undefined initial value is working", () => {
     const initialState = [
       {
