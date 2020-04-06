@@ -104,7 +104,7 @@ import React from "react";
 import { useWindowSize } from "react-hooks-pack";
 
 function App() {
-  const [width, height] = useWindowSize();
+  const { width, height } = useWindowSize();
 
   return (
     <div>
