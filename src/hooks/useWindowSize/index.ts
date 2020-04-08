@@ -1,15 +1,20 @@
 import { useLayoutEffect, useState } from "react";
 
+interface State {
+  width: number;
+  height: number;
+}
+
 const initialState = {
   width: 0,
   height: 0,
 };
 
-function useWindowSize() {
-  const [size, setSize] = useState(initialState);
+function useWindowSize(): State {
+  const [size, setSize] = useState<State>(initialState);
 
   useLayoutEffect(() => {
-    function updateSize() {
+    function updateSize(): void {
       setSize({
         width: window.innerWidth,
         height: window.innerHeight,

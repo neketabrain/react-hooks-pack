@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 function useForceUpdate(): () => void {
-  const [_, setState] = useState(0);
+  const [, setState] = useState<number>(0);
 
-  function forceUpdate() {
+  function forceUpdate(): void {
     setState((prevState) => prevState + 1);
   }
 
