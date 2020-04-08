@@ -21,6 +21,7 @@ yarn add react-hooks-pack
 ## Hooks
 
 [useForm](#useforminitialstate) - makes it easier to work with form\
+[useDeferredValue](#usedeferredvaluevalue-any-delay-number) - delay value change\
 [useWindowSize](#usewindowsize) - return window width and height\
 [useForceUpdate](#useforceupdate) - call force re-render (not recommended)\
 [useTimer](#usetimerconfig) - incremental and decremental timer
@@ -31,7 +32,7 @@ yarn add react-hooks-pack
 
 ### `useForm(initialState)`
 
-```typescript jsx
+```jsx harmony
 import React from "react";
 import { useForm } from "react-hooks-pack";
 
@@ -39,11 +40,11 @@ const initialState = [
   {
     name: "name",
     value: "initial name",
-    validate: (val: string) => val.replace(/\d/gim, ""),
   },
   {
-    name: "password",
-    value: "initial password",
+    name: "phone",
+    value: "",
+    validate: (val) => val.replace(/\D/gim, ""),
   },
 ];
 
@@ -53,7 +54,7 @@ function App() {
   return (
     <form>
       <input name="name" value={form.name} onChange={onChange} />
-      <input name="password" value={form.password} onChange={onChange} />
+      <input name="phone" value={form.phone} onChange={onChange} />
     </form>
   );
 }
@@ -63,7 +64,7 @@ function App() {
 
 The configuration is required and must be an array
 
-```typescript jsx
+```javascript
 const initialState = [
   {
     name: "name", // input name
@@ -75,21 +76,41 @@ const initialState = [
 
 <br />
 
+### `useDeferredValue(value: any, delay: number)`
+
+```jsx harmony
+import React, { useState } from "react";
+import { useDeferredValue } from "react-hooks-pack";
+
+function App() {
+  const [value, setValue] = useState("Initial");
+  const deferredValue = useDeferredValue(value, 2000);
+
+  function handleChange(event) {
+    setValue(event.target.value);
+  }
+
+  return (
+    <div>
+      <input value={value} onChange={handleChange} />
+      <p>Deferred value: {deferredValue}</p>
+    </div>
+  );
+}
+```
+
+<br />
+
 ### `useForceUpdate()`
 
-```typescript jsx
+```jsx harmony
 import React from "react";
 import { useForceUpdate } from "react-hooks-pack";
 
 function App() {
   const forceUpdate = useForceUpdate();
 
-  return (
-    <div>
-      <button onClick={forceUpdate}>Update</button>
-      ...
-    </div>
-  );
+  return <button onClick={forceUpdate}>Update</button>;
 }
 ```
 
@@ -99,7 +120,7 @@ function App() {
 
 Values will update after every window resize event
 
-```typescript jsx
+```jsx harmony
 import React from "react";
 import { useWindowSize } from "react-hooks-pack";
 
