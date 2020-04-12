@@ -1,5 +1,6 @@
 module.exports = {
   preset: "ts-jest",
+  clearMocks: true,
   setupFilesAfterEnv: ["jest-enzyme"],
   testEnvironment: "enzyme",
   testEnvironmentOptions: {
@@ -8,8 +9,5 @@ module.exports = {
   roots: ["./src"],
   moduleFileExtensions: ["ts", "tsx", "js"],
   testPathIgnorePatterns: ["node_modules/"],
-  transform: {
-    "^.+\\.tsx?$": "ts-jest",
-  },
   testMatch: ["**/*.test.(ts|tsx)"],
 };

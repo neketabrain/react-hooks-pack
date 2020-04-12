@@ -18,12 +18,14 @@
     "rootDir": "src",
     "strict": true,
     "allowJs": true,
+    "isolatedModules": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noImplicitReturns": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"],
   "exclude": [

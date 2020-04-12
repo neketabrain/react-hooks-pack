@@ -1,3 +1,4 @@
-export { default as useForm } from "./useForm";
-export { default as useForceUpdate } from "./useForceUpdate";
-export { default as useWindowSize } from "./useWindowSize";
+export { useForm } from "./useForm";
+export { useWindowSize } from "./useWindowSize";
+export { useForceUpdate } from "./useForceUpdate";
+export { useDeferredValue } from "./useDeferredValue";

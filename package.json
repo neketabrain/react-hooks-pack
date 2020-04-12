@@ -34,12 +34,12 @@
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "dev": "rollup -cw",
     "build": "npm run clean && rollup -c",
-    "deploy": "npm run build && npm publish",
-    "lint": "eslint --cache src/**/*.{js,ts,jsx,tsx}",
-    "test": "jest"
+    "lint": "eslint --cache src/**/*.{ts,tsx}",
+    "lint:fix": "npm run lint --fix",
+    "test": "jest --maxWorkers 2"
   },
   "engines": {
     "node": ">=8",
@@ -53,6 +53,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
+    "@testing-library/react-hooks": "^3.2.1",
     "@types/enzyme": "^3.10.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^25.1.4",
@@ -74,8 +75,11 @@
     "lint-staged": "^10.0.9",
     "path": "^0.12.7",
     "prettier": "^2.0.2",
+    "raf-stub": "^3.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-test-renderer": "^16.13.1",
+    "rimraf": "^3.0.2",
     "rollup": "^2.2.0",
     "rollup-plugin-eslint": "^7.0.0",
     "rollup-plugin-typescript2": "^0.27.0",
@@ -84,12 +88,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "npm run lint && lint-staged",
+      "pre-push": "npm run lint && npm run test"
     }
   },
   "lint-staged": {
-    ".{js,ts,jsx.tsx}": [
-      "npm run lint --fix",
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
       "git add"
     ]
   }
