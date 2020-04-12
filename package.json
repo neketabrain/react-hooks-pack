@@ -1,6 +1,6 @@
 {
   "name": "react-hooks-pack",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Custom React hooks package",
   "publishConfig": {
     "access": "public"
@@ -22,19 +22,19 @@
     "helpers"
   ],
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
-  "browser": "dist/index.bundle.js",
+  "main": "lib/index.js",
+  "module": "lib/index.es.js",
+  "jsnext:main": "lib/index.es.js",
+  "browser": "lib/index.bundle.js",
   "files": [
-    "dist",
+    "lib",
     "README.md",
     "LICENSE"
   ],
-  "types": "dist/index.d.ts",
-  "typings": "dist/index.d.ts",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf lib",
     "dev": "rollup -cw",
     "build": "npm run clean && rollup -c",
     "lint": "eslint --cache src/**/*.{ts,tsx}",
