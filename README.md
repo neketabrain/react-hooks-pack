@@ -43,7 +43,6 @@ const initialState = [
   },
   {
     name: "phone",
-    value: "",
     validate: (val) => val.replace(/\D/gim, ""),
   },
 ];
@@ -68,7 +67,7 @@ The configuration is required and must be an array
 const initialState = [
   {
     name: "name", // input name
-    value: "", // initial value
+    value: "", // initial value (optional, default: "")
     validate: (value) => value, // validation method (optional)
   },
 ];
