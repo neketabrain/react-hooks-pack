@@ -24,7 +24,7 @@
     "noImplicitReturns": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "allowSyntheticDefaultImports": true
   },
   "include": ["src"],
@@ -34,7 +34,7 @@
     "dist",
     "lib",
     "example",
-    "rollup.config.js",
+    "./rollup.config.js",
     "**/*.test.*"
   ]
 }

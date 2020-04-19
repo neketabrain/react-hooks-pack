@@ -1,4 +1,6 @@
 module.exports = {
+  coverageDirectory: "./coverage/",
+  collectCoverage: true,
   preset: "ts-jest",
   clearMocks: true,
   setupFilesAfterEnv: ["jest-enzyme"],

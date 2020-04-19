@@ -3,12 +3,13 @@ import path from "path";
 import typescript from "rollup-plugin-typescript2";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import { terser } from "rollup-plugin-terser";
 import { eslint } from "rollup-plugin-eslint";
 
 import pkg from "./package.json";
 
 const outputConfig = {
-  sourcemap: true,
+  sourcemap: false,
   exports: "named",
   globals: {
     react: "react",
@@ -48,6 +49,14 @@ export default {
       tsconfig: path.resolve(__dirname, "tsconfig.json"),
       clean: true,
       rollupCommonJSResolveHack: true,
+    }),
+    terser({
+      compress: {
+        pure_getters: true,
+        unsafe: true,
+        unsafe_comps: true,
+        warnings: false,
+      },
     }),
   ],
   external: ["react", "react-dom"],

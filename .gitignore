@@ -5,11 +5,7 @@ node_modules
 build
 dist
 lib
-
 coverage
-
-yarn.lock
-package-lock.json
 
 npm-debug.log*
 yarn-debig.log*

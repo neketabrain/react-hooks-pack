@@ -1,6 +1,10 @@
 # react-hooks-pack
 
-[![npm Version](https://img.shields.io/npm/v/react-hooks-pack.svg)](https://www.npmjs.com/package/react-hooks-pack) [![License](https://img.shields.io/npm/l/react-hooks-pack.svg)](https://github.com/neketabrain/react-hooks-pack/blob/master/LICENSE) [![Bundle size](https://badgen.net/bundlephobia/min/react-hooks-pack?label=size)](https://bundlephobia.com/result?p=react-hooks-pack) [![Bundle size](https://badgen.net/bundlephobia/minzip/react-hooks-pack?label=gzip%20size)](https://bundlephobia.com/result?p=react-hooks-pack)
+[![npm Version](https://img.shields.io/npm/v/react-hooks-pack.svg)](https://www.npmjs.com/package/react-hooks-pack)
+[![License](https://img.shields.io/npm/l/react-hooks-pack.svg)](https://github.com/neketabrain/react-hooks-pack/blob/master/LICENSE)
+[![Bundle size](https://badgen.net/bundlephobia/min/react-hooks-pack?label=size)](https://bundlephobia.com/result?p=react-hooks-pack)
+[![Bundle size](https://badgen.net/bundlephobia/minzip/react-hooks-pack?label=gzip%20size)](https://bundlephobia.com/result?p=react-hooks-pack)
+[![Build Status](https://travis-ci.com/neketabrain/react-hooks-pack.svg?branch=master)](https://travis-ci.com/neketabrain/react-hooks-pack)
 
 Custom [React hooks](https://reactjs.org/docs/hooks-intro.html) package
 
@@ -21,10 +25,10 @@ yarn add react-hooks-pack
 ## Hooks
 
 [useForm](#useforminitialstate) - makes it easier to work with form\
-[useDeferredValue](#usedeferredvaluevalue-any-delay-number) - delay value change\
+[useDeferredValue](#usedeferredvaluevalue-any-delay-number) - delay a value change\
+[useDebounce](#usedebounce) - delay a function call\
 [useWindowSize](#usewindowsize) - return window width and height\
-[useForceUpdate](#useforceupdate) - call force re-render (not recommended)\
-[useTimer](#usetimerconfig) - incremental and decremental timer
+[useForceUpdate](#useforceupdate) - call force re-render (not recommended)
 
 <br />
 
@@ -100,6 +104,43 @@ function App() {
 
 <br />
 
+### `useDebounce()`
+
+Each debounce function requires a new instance of useDebounce hook
+
+```jsx harmony
+import React from "react";
+import { useDebounce } from "react-hooks-pack";
+
+function App() {
+  const debounce = useDebounce();
+  const debounce2 = useDebounce();
+
+  function callback() {
+    console.log(
+      `This message will be logged once after 2 seconds if handleChange has not been called for 2 seconds`
+    );
+  }
+
+  function callback2() {
+    console.log("Second callback");
+  }
+
+  function handleChange() {
+    debounce(callback, 2000);
+    debounce2(callback2, 5000);
+  }
+
+  return (
+    <div>
+      <input onChange={handleChange} />
+    </div>
+  );
+}
+```
+
+<br />
+
 ### `useForceUpdate()`
 
 ```jsx harmony
@@ -134,11 +175,5 @@ function App() {
   );
 }
 ```
-
-<br />
-
-### `useTimer(config?)`
-
-Work in progress
 
 <br />
