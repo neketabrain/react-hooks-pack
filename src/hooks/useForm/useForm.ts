@@ -6,7 +6,7 @@ type Value = string | string[] | number | boolean | undefined;
 export interface Input {
   name: string;
   value?: Value;
-  validate?(value: Value): Value;
+  formatter?(value: Value): Value;
 }
 
 interface State {
@@ -57,18 +57,18 @@ function useForm(initialState: Input[]): [State, (event: Event) => void] {
   );
 
   function onChange(event: Event): void {
-    const target = event?.currentTarget || event?.target || {};
+    const target = event?.target || {};
     const { name, value, type, checked } = target;
 
     if (!name) return;
 
     const newValue = type === "checkbox" ? checked : value;
-    const validator = initialState.find(
+    const formatter = initialState.find(
       ({ name: inputName }) => inputName === name
-    )?.validate;
+    )?.formatter;
 
-    if (validator) {
-      const validValue = validator(newValue);
+    if (formatter) {
+      const validValue = formatter(newValue);
       dispatch({ name, value: validValue });
     } else {
       dispatch({ name, value: newValue });

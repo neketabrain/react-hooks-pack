@@ -47,7 +47,7 @@ const initialState = [
   },
   {
     name: "phone",
-    validate: (val) => val.replace(/\D/gim, ""),
+    formatter: (val) => val.replace(/\D/gim, ""),
   },
 ];
 
@@ -72,7 +72,7 @@ const initialState = [
   {
     name: "name", // input name
     value: "", // initial value (optional, default: "")
-    validate: (value) => value, // validation method (optional)
+    formatter: (value) => value, // formatting method (optional)
   },
 ];
 ```

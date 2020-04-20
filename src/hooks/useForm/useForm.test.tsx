@@ -71,7 +71,7 @@ describe("useForm", () => {
 
     act(() =>
       onChange({
-        currentTarget: { name: "text", value: "Hello world!" },
+        target: { name: "text", value: "Hello world!" },
       } as ChangeEvent<HTMLInputElement>)
     );
 
@@ -83,7 +83,7 @@ describe("useForm", () => {
       {
         name: "text",
         value: "",
-        validate: (val: string) => val.replace(/\d/gim, ""),
+        formatter: (val: string) => val.replace(/\d/gim, ""),
       },
     ];
 
@@ -94,7 +94,7 @@ describe("useForm", () => {
 
     act(() =>
       onChange({
-        currentTarget: { name: "text", value: "Hello" },
+        target: { name: "text", value: "Hello" },
       } as ChangeEvent<HTMLInputElement>)
     );
 
