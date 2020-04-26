@@ -1,7 +1,7 @@
 import { useReducer, Reducer, ChangeEvent } from "react";
 
 type Event = ChangeEvent<HTMLInputElement>;
-type Value = string | string[] | number | boolean | undefined;
+type Value = string | string[] | number | boolean | FileList | null | undefined;
 
 export interface Input {
   name: string;
@@ -9,17 +9,19 @@ export interface Input {
   formatter?(value: Value): Value;
 }
 
+export type Inputs = Input[];
+
 interface State {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
 interface Action {
-  name: string;
-  value: Value;
+  target: HTMLInputElement;
+  formatter?: Function;
 }
 
-function formatState(state: Input[]): State {
+function formatState(state: Inputs): State {
   return state.reduce((acc: State, input: Input) => {
     const { name, value } = input;
     acc[name] = value === undefined ? "" : value;
@@ -28,16 +30,39 @@ function formatState(state: Input[]): State {
   }, {});
 }
 
-function reducer(state: State, action: Action): State {
-  const { name, value } = action;
-
-  return {
-    ...state,
-    [name]: value,
-  };
+function mockFormatter(val: Value): Value {
+  return val;
 }
 
-function useForm(initialState: Input[]): [State, (event: Event) => void] {
+function reducer(state: State, action: Action): State {
+  const { target, formatter = mockFormatter } = action;
+  const { type, name, value, checked, files } = target;
+
+  switch (type) {
+    case "checkbox": {
+      return {
+        ...state,
+        [name]: formatter(checked),
+      };
+    }
+
+    case "file": {
+      return {
+        ...state,
+        [name]: formatter(files),
+      };
+    }
+
+    default: {
+      return {
+        ...state,
+        [name]: formatter(value),
+      };
+    }
+  }
+}
+
+function useForm(initialState: Inputs): [State, (event: Event) => void] {
   if (!initialState) {
     throw new Error(
       "Initial state is required. See: https://github.com/neketabrain/react-hooks-pack#useforminitialstate"
@@ -57,21 +82,17 @@ function useForm(initialState: Input[]): [State, (event: Event) => void] {
   );
 
   function onChange(event: Event): void {
-    const target = event?.target || {};
-    const { name, value, type, checked } = target;
+    const target = event?.target;
 
-    if (!name) return;
+    if (!target || !target.name) return;
 
-    const newValue = type === "checkbox" ? checked : value;
-    const formatter = initialState.find(
-      ({ name: inputName }) => inputName === name
-    )?.formatter;
+    const { formatter } =
+      initialState.find((input) => input.name === target.name) || {};
 
-    if (formatter) {
-      const validValue = formatter(newValue);
-      dispatch({ name, value: validValue });
+    if (formatter && typeof formatter === "function") {
+      dispatch({ target, formatter });
     } else {
-      dispatch({ name, value: newValue });
+      dispatch({ target });
     }
   }
 

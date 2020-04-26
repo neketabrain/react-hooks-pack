@@ -42,12 +42,15 @@ import { useForm } from "react-hooks-pack";
 
 const initialState = [
   {
-    name: "name",
-    value: "initial name",
+    name: "text",
+    value: "initial value",
+    formatter: (val) => val.replace(/\d/gim, ""),
   },
   {
-    name: "phone",
-    formatter: (val) => val.replace(/\D/gim, ""),
+    name: "boolean",
+  },
+  {
+    name: "files",
   },
 ];
 
@@ -56,8 +59,14 @@ function App() {
 
   return (
     <form>
-      <input name="name" value={form.name} onChange={onChange} />
-      <input name="phone" value={form.phone} onChange={onChange} />
+      <input name="text" value={form.text} onChange={onChange} />
+      <input
+        type="checkbox"
+        name="boolean"
+        value={form.boolean}
+        onChange={onChange}
+      />
+      <input type="file" name="files" onChange={onChange} />
     </form>
   );
 }
