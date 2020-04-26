@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function useDeferredValue(value: any, delay: number) {
+function useDeferredValue<T>(value: T, delay: number) {
   const [deferredValue, setDeferredValue] = useState(value);
   const timer = useRef<number | undefined>();
 

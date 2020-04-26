@@ -1,6 +1,6 @@
 {
   "name": "react-hooks-pack",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Custom React hooks package",
   "publishConfig": {
     "access": "public"
@@ -37,7 +37,6 @@
     "lint": "eslint --cache src/**/*.{ts,tsx}",
     "lint:fix": "npm run lint --fix",
     "test": "jest --maxWorkers 2",
-    "test:coverage": "jest --coverage",
     "deploy": "npm run build && npm publish"
   },
   "engines": {

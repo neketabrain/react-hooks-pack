@@ -1,13 +1,13 @@
 import { useLayoutEffect, useState } from "react";
 
-interface State {
+export interface State {
   width: number;
   height: number;
 }
 
 const initialState = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: window?.innerWidth || 0,
+  height: window?.innerHeight || 0,
 };
 
 function useWindowSize(): State {

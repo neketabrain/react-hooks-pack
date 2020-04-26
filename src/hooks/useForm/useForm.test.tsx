@@ -2,9 +2,9 @@ import { act, renderHook } from "@testing-library/react-hooks";
 
 import { ChangeEvent } from "react";
 
-import useForm, { Input } from "./useForm";
+import useForm, { Inputs } from "./useForm";
 
-function getHook(state: Input[]) {
+function getHook(state: Inputs) {
   return renderHook(() => useForm(state));
 }
 
