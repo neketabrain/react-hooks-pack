@@ -1,12 +1,13 @@
-import { useReducer, Reducer, ChangeEvent } from "react";
+import { useReducer, useCallback, Reducer, ChangeEvent } from "react";
 
 type Event = ChangeEvent<HTMLInputElement>;
-type Value = string | string[] | number | boolean | FileList | null | undefined;
 
 export interface Input {
   name: string;
-  value?: Value;
-  formatter?(value: Value): Value;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formatter?: (value: any) => any;
 }
 
 export type Inputs = Input[];
@@ -30,7 +31,7 @@ function formatState(state: Inputs): State {
   }, {});
 }
 
-function mockFormatter(val: Value): Value {
+function mockFormatter<T>(val: T): T {
   return val;
 }
 
@@ -81,7 +82,7 @@ function useForm(initialState: Inputs): [State, (event: Event) => void] {
     formattedState
   );
 
-  function onChange(event: Event): void {
+  const onChange = useCallback((event: Event) => {
     const target = event?.target;
 
     if (!target || !target.name) return;
@@ -94,7 +95,7 @@ function useForm(initialState: Inputs): [State, (event: Event) => void] {
     } else {
       dispatch({ target });
     }
-  }
+  }, []);
 
   return [state, onChange];
 }
