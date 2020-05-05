@@ -1,103 +1,59 @@
-import { useReducer, useCallback, Reducer, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 
-type Event = ChangeEvent<HTMLInputElement>;
+import {
+  UseFormArgs,
+  OnChangeEvent,
+  CustomOnChangeEvent,
+  OnSubmitEvent,
+} from "./types";
 
-export interface Input {
-  name: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formatter?: (value: any) => any;
-}
+import { isSyntheticEvent, reduceByType } from "./utils";
 
-export type Inputs = Input[];
+function useForm<Values>(args: UseFormArgs<Values>) {
+  const { initialValues, handleSubmit } = args;
 
-interface State {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
+  const [values, setValues] = useState<Values>(initialValues);
+  const [errors, setErrors] = useState<object>({});
+  const [touched, setTouched] = useState<object>({});
 
-interface Action {
-  target: HTMLInputElement;
-  formatter?: Function;
-}
+  useEffect(() => {
+    setValues(initialValues);
+    setErrors({});
+    setTouched({});
+  }, [initialValues]);
 
-function formatState(state: Inputs): State {
-  return state.reduce((acc: State, input: Input) => {
-    const { name, value } = input;
-    acc[name] = value === undefined ? "" : value;
+  function onChange(event: OnChangeEvent | CustomOnChangeEvent<Values>) {
+    if (isSyntheticEvent(event)) {
+      const changedValue = reduceByType(event);
+      setValues({ ...values, ...changedValue });
 
-    return acc;
-  }, {});
-}
-
-function mockFormatter<T>(val: T): T {
-  return val;
-}
-
-function reducer(state: State, action: Action): State {
-  const { target, formatter = mockFormatter } = action;
-  const { type, name, value, checked, files } = target;
-
-  switch (type) {
-    case "checkbox": {
-      return {
-        ...state,
-        [name]: formatter(checked),
-      };
+      return;
     }
 
-    case "file": {
-      return {
-        ...state,
-        [name]: formatter(files),
-      };
-    }
-
-    default: {
-      return {
-        ...state,
-        [name]: formatter(value),
-      };
-    }
-  }
-}
-
-function useForm(initialState: Inputs): [State, (event: Event) => void] {
-  if (!initialState) {
-    throw new Error(
-      "Initial state is required. See: https://github.com/neketabrain/react-hooks-pack#useforminitialstate"
-    );
+    setValues({ ...values, ...event });
   }
 
-  if (!Array.isArray(initialState)) {
-    throw new Error(
-      "Initial state must be an array. See: https://github.com/neketabrain/react-hooks-pack#useforminitialstate"
-    );
+  function onBlur(event: OnChangeEvent) {
+    const { name } = event.target;
+    setTouched({ ...touched, [name]: true });
+    setErrors({ ...errors });
   }
 
-  const formattedState = formatState(initialState);
-  const [state, dispatch] = useReducer<Reducer<State, Action>>(
-    reducer,
-    formattedState
-  );
+  function onSubmit(event: OnSubmitEvent) {
+    event.preventDefault();
 
-  const onChange = useCallback((event: Event) => {
-    const target = event?.target;
+    setErrors({ ...errors });
+    handleSubmit(values, errors);
+  }
 
-    if (!target || !target.name) return;
-
-    const { formatter } =
-      initialState.find((input) => input.name === target.name) || {};
-
-    if (formatter && typeof formatter === "function") {
-      dispatch({ target, formatter });
-    } else {
-      dispatch({ target });
-    }
-  }, []);
-
-  return [state, onChange];
+  return {
+    values,
+    errors,
+    touched,
+    onChange,
+    onBlur,
+    onSubmit,
+  };
 }
 
 export default useForm;
