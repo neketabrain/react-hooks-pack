@@ -5,15 +5,17 @@ import {
   OnChangeEvent,
   CustomOnChangeEvent,
   OnSubmitEvent,
+  UseFormErrors,
 } from "./types";
 
 import { isSyntheticEvent, reduceByType } from "./utils";
 
 function useForm<Values>(args: UseFormArgs<Values>) {
-  const { initialValues, handleSubmit } = args;
+  const { initialValues, handleSubmit, validate, options = {} } = args;
+  const { validateOnBlur = true, validateOnSubmit = true } = options;
 
   const [values, setValues] = useState<Values>(initialValues);
-  const [errors, setErrors] = useState<object>({});
+  const [errors, setErrors] = useState<UseFormErrors<Values> | object>({});
   const [touched, setTouched] = useState<object>({});
 
   useEffect(() => {
@@ -35,14 +37,31 @@ function useForm<Values>(args: UseFormArgs<Values>) {
 
   function onBlur(event: OnChangeEvent) {
     const { name } = event.target;
+
+    if (validate && validateOnBlur) {
+      const validationErrors = validate(values);
+      const error = Object.entries(validationErrors).find(
+        ([key]) => key === name
+      );
+      const message = error?.[1];
+      setErrors({ ...errors, [name]: message });
+    }
+
     setTouched({ ...touched, [name]: true });
-    setErrors({ ...errors });
   }
 
   function onSubmit(event: OnSubmitEvent) {
     event.preventDefault();
 
-    setErrors({ ...errors });
+    if (validate && validateOnSubmit) {
+      const validationErrors = validate(values);
+
+      if (validationErrors) {
+        setErrors({ ...validationErrors });
+        return;
+      }
+    }
+
     handleSubmit(values, errors);
   }
 
