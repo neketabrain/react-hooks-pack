@@ -13,9 +13,7 @@ function Example() {
   const secondDebounce = useDebounce();
 
   function firstCallback() {
-    console.log(
-      `This message will be logged once after 2 seconds if handleChange has not been called for 2 seconds`
-    );
+    console.log("This message will be logged once after 2 seconds if handleChange has not been called for 2 seconds");
   }
 
   function secondCallback() {
