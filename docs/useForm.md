@@ -101,5 +101,5 @@ const { values, errors, touched, onChange, onBlur, onSubmit } = useForm<T>({
 - **`errors`**_`: { [name in keyof Partial<T>]: string } | null`_ &mdash; Validation errors. Available if validation method is declared;
 - **`touched`**_`: { [name in keyof Partial<T>]: boolean }`_ &mdash; Object with the name of inputs that you touched;
 - **`onChange`**_`: (event: React.ChangeEvent<HTMLInputElement> | Partial<T>) => void`_ &mdash; Method for changing values;
-- **`onSubmit`**_`: (event: FormEvent<HTMLFormElement>) => void`_ &mdash; Submit method;
-- **`onBlur`**_`: (event: ChangeEvent<HTMLInputElement>) => void`_ &mdash; Required for validation after a blur event and for getting the touched object;
+- **`onSubmit`**_`: (event: React.FormEvent<HTMLFormElement>) => void`_ &mdash; Submit method;
+- **`onBlur`**_`: (event: React.ChangeEvent<HTMLInputElement>) => void`_ &mdash; Required for validation after a blur event and for getting the touched object;
