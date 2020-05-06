@@ -6,21 +6,29 @@ import {
   CustomOnChangeEvent,
   OnSubmitEvent,
   UseFormErrors,
+  UseFormTouched,
 } from "./types";
 
-import { isSyntheticEvent, reduceByType } from "./utils";
+import {
+  isSyntheticEvent,
+  reduceByType,
+  errorsIsEmpty,
+  removeNullableErrors,
+} from "./utils";
 
 function useForm<Values>(args: UseFormArgs<Values>) {
   const { initialValues, handleSubmit, validate, options = {} } = args;
   const { validateOnBlur = true, validateOnSubmit = true } = options;
 
   const [values, setValues] = useState<Values>(initialValues);
-  const [errors, setErrors] = useState<UseFormErrors<Values> | object>({});
-  const [touched, setTouched] = useState<object>({});
+  const [errors, setErrors] = useState<UseFormErrors<Values> | object | null>(
+    null
+  );
+  const [touched, setTouched] = useState<UseFormTouched<Values> | {}>({});
 
   useEffect(() => {
     setValues(initialValues);
-    setErrors({});
+    setErrors(null);
     setTouched({});
   }, [initialValues]);
 
@@ -40,11 +48,14 @@ function useForm<Values>(args: UseFormArgs<Values>) {
 
     if (validate && validateOnBlur) {
       const validationErrors = validate(values);
-      const error = Object.entries(validationErrors).find(
-        ([key]) => key === name
-      );
-      const message = error?.[1];
-      setErrors({ ...errors, [name]: message });
+      const error = (validationErrors as { [name: string]: string })[name];
+      const parsedErrors = removeNullableErrors({ ...errors, [name]: error });
+
+      if (errorsIsEmpty(parsedErrors)) {
+        setErrors(null);
+      } else {
+        setErrors(parsedErrors);
+      }
     }
 
     setTouched({ ...touched, [name]: true });
@@ -55,11 +66,17 @@ function useForm<Values>(args: UseFormArgs<Values>) {
 
     if (validate && validateOnSubmit) {
       const validationErrors = validate(values);
+      const parsedErrors = removeNullableErrors(validationErrors);
 
-      if (validationErrors) {
-        setErrors({ ...validationErrors });
-        return;
+      if (errorsIsEmpty(parsedErrors)) {
+        setErrors(null);
+        handleSubmit(values, null);
+      } else {
+        setErrors(parsedErrors);
+        handleSubmit(values, parsedErrors);
       }
+
+      return;
     }
 
     handleSubmit(values, errors);

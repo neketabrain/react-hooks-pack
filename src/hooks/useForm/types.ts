@@ -6,7 +6,11 @@ export type CustomOnChangeEvent<Values> = Partial<Values>;
 export type OnSubmitEvent = FormEvent<HTMLFormElement>;
 
 export type UseFormErrors<Values> = {
-  [name in keyof Partial<Values>]: string | null;
+  [name in keyof Partial<Values>]: string;
+};
+
+export type UseFormTouched<Values> = {
+  [name in keyof Partial<Values>]: boolean;
 };
 
 interface Options {
@@ -16,7 +20,10 @@ interface Options {
 
 export interface UseFormArgs<Values> {
   initialValues: Values;
-  handleSubmit(values: Values, errors: object): void;
+  handleSubmit(
+    values: Values,
+    errors: UseFormErrors<Values> | object | null
+  ): void;
   validate?(values: Values): UseFormErrors<Values>;
   options?: Options;
 }
