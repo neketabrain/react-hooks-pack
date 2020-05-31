@@ -1,6 +1,6 @@
 {
   "name": "react-hooks-pack",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Custom React hooks package",
   "publishConfig": {
     "access": "public"
@@ -19,10 +19,8 @@
     "helpers"
   ],
   "license": "MIT",
-  "main": "./lib/index.js",
-  "module": "./lib/index.es.js",
-  "jsnext:main": "./lib/index.es.js",
-  "browser": "./lib/index.bundle.js",
+  "main": "./lib/index.cjs.js",
+  "module": "./lib/index.esm.js",
   "files": [
     "lib",
     "docs",
@@ -30,7 +28,6 @@
     "LICENSE"
   ],
   "types": "./lib/index.d.ts",
-  "typings": "./lib/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
     "dev": "rollup -cw",

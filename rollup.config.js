@@ -10,7 +10,6 @@ import pkg from "./package.json";
 
 const outputConfig = {
   sourcemap: false,
-  exports: "named",
   globals: {
     react: "react",
   },
@@ -26,12 +25,12 @@ export default {
     },
     {
       file: pkg.module,
-      format: "es",
+      format: "esm",
       ...outputConfig,
     },
     {
-      name: "ReactHooksPack",
-      file: pkg.browser,
+      name: "reactHooksPack",
+      file: "lib/index.js",
       format: "umd",
       ...outputConfig,
     },
