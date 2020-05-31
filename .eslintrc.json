@@ -1,32 +1,18 @@
 {
-  "parser": "@typescript-eslint/parser",
   "env": {
     "browser": true,
     "node": true,
     "es2020": true
-  },
-  "parserOptions": {
-    "project": "./tsconfig.eslint.json",
-    "createDefaultProgram": true,
-    "sourceType": "module",
-    "ecmaVersion": 2020,
-    "ecmaFeatures": {
-      "jsx": true
-    }
   },
   "settings": {
     "react": {
       "version": "detect"
     }
   },
-  "plugins": ["@typescript-eslint"],
   "extends": [
     "airbnb-base",
     "eslint:recommended",
-    "plugin:prettier/recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    "plugin:prettier/recommended"
   ],
   "rules": {
     "quotes": ["error", "double"],
@@ -35,10 +21,39 @@
     "import/extensions": "off",
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
-    "import/no-extraneous-dependencies": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/unbound-method": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/ban-ts-ignore": "off"
-  }
+    "import/no-extraneous-dependencies": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "./tsconfig.json",
+        "createDefaultProgram": true,
+        "sourceType": "module",
+        "ecmaVersion": 2020,
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      },
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+      ],
+      "plugins": ["@typescript-eslint"],
+      "rules": {
+        "@typescript-eslint/interface-name-prefix": [
+          "error",
+          {
+            "prefixWithI": "never"
+          }
+        ],
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/ban-ts-ignore": "off"
+      }
+    }
+  ]
 }
