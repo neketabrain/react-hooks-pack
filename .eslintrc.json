@@ -1,17 +1,20 @@
 {
   "root": true,
+  "parser": "babel-eslint",
   "env": {
     "es6": true,
     "jest": true,
-    "browser": true
+    "browser": true,
+    "node": true
   },
   "extends": [
     "eslint:recommended",
     "prettier",
+    "prettier/babel",
     "plugin:import/errors",
     "plugin:import/warnings"
   ],
-  "plugins": ["prettier", "import"],
+  "plugins": ["babel", "prettier", "import"],
   "settings": {
     "import/resolver": {
       "node": {
@@ -70,7 +73,8 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "prettier/@typescript-eslint",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:import/typescript"
       ],
       "rules": {
         "@typescript-eslint/ban-types": "off",
