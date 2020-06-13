@@ -11,6 +11,10 @@ describe("useDeferredValue", () => {
     jest.clearAllTimers();
   });
 
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   test("should be defined", () => {
     expect(useDeferredValue).toBeDefined();
   });

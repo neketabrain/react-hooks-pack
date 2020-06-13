@@ -11,7 +11,11 @@ describe("useDebounce", () => {
     jest.clearAllTimers();
   });
 
-  it("should be defined", () => {
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  test("should be defined", () => {
     expect(useDebounce).toBeDefined();
   });
 
