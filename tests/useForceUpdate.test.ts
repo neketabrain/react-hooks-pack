@@ -1,10 +1,16 @@
-import { renderHook, act } from "@testing-library/react-hooks";
+import { act, renderHook } from "@testing-library/react-hooks";
 
 import { useForceUpdate } from "../src/useForceUpdate";
 
 describe("useForceUpdate", () => {
   test("should be defined", () => {
     expect(useForceUpdate).toBeDefined();
+  });
+
+  test("should return function", () => {
+    const { result } = renderHook(useForceUpdate);
+
+    expect(result.current).toBeInstanceOf(Function);
   });
 
   test("should forces a re-render every function call", () => {

@@ -20,13 +20,13 @@ describe("useDebounce", () => {
   });
 
   test("should return function", () => {
-    const { result } = renderHook(() => useDebounce());
+    const { result } = renderHook(useDebounce);
 
     expect(result.current).toBeInstanceOf(Function);
   });
 
   test("should call passed function after delay once", () => {
-    const { result } = renderHook(() => useDebounce());
+    const { result } = renderHook(useDebounce);
     const debounce = result.current;
     const callback = jest.fn();
 
@@ -41,7 +41,7 @@ describe("useDebounce", () => {
   });
 
   test("should reset timeout after calling function again", () => {
-    const { result } = renderHook(() => useDebounce());
+    const { result } = renderHook(useDebounce);
     const debounce = result.current;
     const callback = jest.fn();
 

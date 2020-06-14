@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { renderHook, act } from "@testing-library/react-hooks";
+import { act, renderHook } from "@testing-library/react-hooks";
 
 import { useWindowSize } from "../src/useWindowSize";
 
@@ -18,7 +18,7 @@ describe("useWindowSize", () => {
   });
 
   test("should return current window dimensions", () => {
-    const { result } = renderHook(() => useWindowSize());
+    const { result } = renderHook(useWindowSize);
 
     expect(typeof result.current).toBe("object");
     expect(typeof result.current.innerWidth).toBe("number");
@@ -26,7 +26,7 @@ describe("useWindowSize", () => {
   });
 
   test("should re-render after resize window", () => {
-    const { result } = renderHook(() => useWindowSize());
+    const { result } = renderHook(useWindowSize);
 
     void act(() => resizeWindow(500, 500));
     expect(result.current.innerWidth).toBe(500);
