@@ -1,21 +1,30 @@
-import { compose, prop } from "ramda";
-import { useCallback, useEffect, useState } from "react";
+import { andThen, compose, propOr } from "ramda";
+import { useCallback, useState } from "react";
 
 import { OnChangeEvent, OnSubmitEvent } from "../types";
 
-import { ManualChangeEvent, UseForm, UseFormProps } from "./useForm.types";
-import { updateValues } from "./useForm.utils";
+import {
+  ManualChangeEvent,
+  UseForm,
+  UseFormErrors,
+  UseFormOptions,
+  UseFormSubmit,
+  UseFormValidate,
+} from "./useForm.types";
+import { updateValues, validateValues } from "./useForm.utils";
 
-const useForm = <T extends Object>(props: UseFormProps<T>): UseForm<T> => {
-  const initialState = prop("initialState", props);
-  const handleSubmit = prop("handleSubmit", props);
+const useForm = <T extends Object>(
+  initialState: T,
+  handleSubmit: UseFormSubmit<T>,
+  onValidate?: UseFormValidate<T>,
+  options?: UseFormOptions
+): UseForm<T> => {
+  const validateOnSubmit: boolean = propOr(true, "validateOnSubmit", options);
+  const validateOnBlur: boolean = propOr(true, "validateOnBlur", options);
 
   const [values, setValues] = useState<T>(initialState);
+  const [errors, setErrors] = useState<UseFormErrors<T>>(null);
   const [isSubmitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    setValues(initialState);
-  }, [initialState]);
 
   const onChange = useCallback(
     (event: OnChangeEvent | ManualChangeEvent<T>) =>
@@ -28,13 +37,24 @@ const useForm = <T extends Object>(props: UseFormProps<T>): UseForm<T> => {
       event.preventDefault();
 
       setSubmitting(true);
-      await handleSubmit(values);
-      setSubmitting(false);
+
+      await compose(
+        andThen(() => setSubmitting(false)),
+        (errs: UseFormErrors<T>) => {
+          setErrors(errs);
+          return handleSubmit(values, errs);
+        },
+        validateValues(validateOnSubmit, onValidate)
+      )(values);
     },
-    [handleSubmit, values]
+    [handleSubmit, onValidate, validateOnSubmit, values]
   );
 
-  return { values, onChange, onSubmit, isSubmitting };
+  const onBlur = useCallback(() => {
+    compose(setErrors, validateValues(validateOnBlur, onValidate))(values);
+  }, [onValidate, validateOnBlur, values]);
+
+  return { values, onBlur, onChange, onSubmit, isSubmitting, errors };
 };
 
 export default useForm;

@@ -1,9 +1,9 @@
-import { ChangeEvent, FormEvent } from "react";
+import { ChangeEvent, FocusEvent, FormEvent } from "react";
 
 export type Timeout = number | undefined;
 export type VoidFunction = () => void;
 
-export type OnSubmitEvent = FormEvent<HTMLFormElement>;
-export type OnChangeEvent = ChangeEvent<HTMLInputElement>;
-export type InputTarget = EventTarget & HTMLInputElement;
 export type InputValue = string | boolean | FileList | null;
+export type onBlurEvent = FocusEvent<HTMLInputElement | HTMLTextAreaElement>;
+export type OnChangeEvent = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+export type OnSubmitEvent = FormEvent<HTMLFormElement>;

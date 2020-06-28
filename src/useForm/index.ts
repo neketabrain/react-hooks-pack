@@ -1,3 +1,9 @@
 export { default as useForm } from "./useForm";
 
-export type { UseForm, UseFormProps } from "./useForm.types";
+export type {
+  UseForm,
+  UseFormErrors,
+  UseFormOptions,
+  UseFormValidate,
+  UseFormSubmit,
+} from "./useForm.types";
