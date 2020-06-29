@@ -23,7 +23,7 @@ import {
 } from "./useForm.types";
 
 // checkObject :: a -> (a | Null)
-const checkObject = <T extends Object>(object: T): T | null =>
+export const checkObject = <T extends Object>(object: T): T | null =>
   ifElse(
     isEmpty,
     () => null,
