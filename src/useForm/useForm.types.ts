@@ -1,4 +1,4 @@
-import { onBlurEvent, OnChangeEvent, OnSubmitEvent } from "../types";
+import { OnBlurEvent, OnChangeEvent, OnSubmitEvent } from "../types";
 
 export type ManualChangeEvent<T> = Partial<T>;
 
@@ -21,7 +21,7 @@ export type UseFormOptions = {
 export type UseForm<T> = {
   errors: UseFormErrors<T>;
   isSubmitting: boolean;
-  onBlur: (event: onBlurEvent) => void;
+  onBlur: (event: OnBlurEvent) => void;
   onChange: (event: OnChangeEvent | ManualChangeEvent<T>) => void;
   onSubmit: (event: OnSubmitEvent) => void;
   values: T;

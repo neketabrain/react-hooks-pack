@@ -1,7 +1,7 @@
 import { andThen, compose, propOr } from "ramda";
 import { useCallback, useEffect, useState } from "react";
 
-import { OnChangeEvent, onBlurEvent, OnSubmitEvent } from "../types";
+import { OnChangeEvent, OnBlurEvent, OnSubmitEvent } from "../types";
 
 import {
   ManualChangeEvent,
@@ -43,7 +43,7 @@ const useForm = <T extends Object>(
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onBlur = useCallback(
-    (event: onBlurEvent) => {
+    (event: OnBlurEvent) => {
       if (validateOnBlur) {
         compose(
           setErrors,
