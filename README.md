@@ -6,7 +6,7 @@
 [![Bundle size](https://badgen.net/bundlephobia/minzip/react-hooks-pack?label=gzip%20size)](https://bundlephobia.com/result?p=react-hooks-pack)
 [![Build Status](https://travis-ci.com/neketabrain/react-hooks-pack.svg?branch=master)](https://travis-ci.com/neketabrain/react-hooks-pack)
 
-Custom [React hooks](https://reactjs.org/docs/hooks-intro.html) package
+Package of custom [React hooks](https://reactjs.org/docs/hooks-intro.html)
 
 ## Installation
 
@@ -24,8 +24,8 @@ yarn add react-hooks-pack
 
 ## Hooks
 
-[useForm](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForm.md) - makes it easier to work with form\
-[useDeferredValue](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useDeferredValue.md) - delay a value change\
-[useDebounce](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useDebounce.md) - delay a function call\
-[useWindowSize](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useWindowSize.md) - return window width and height\
-[useForceUpdate](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForceUpdate.md) - call force re-render
+- [useDebounce](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useDebounce.md) - delay the calling of function\
+- [useDeferredValue](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useDeferredValue.md) - delay the changing of value\
+- [useForceUpdate](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForceUpdate.md) - call force re-render\
+- [useForm](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForm.md) - form helper\
+- [useWindowSize](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useWindowSize.md) - return width and height of window\

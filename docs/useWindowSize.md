@@ -1,6 +1,6 @@
 # `useWindowSize`
 
-Return window width and height. Values will update after every window resize event.
+Return width and height of window. Values will update after every window resize event.
 
 ## Usage
 
@@ -9,12 +9,12 @@ import React from "react";
 import { useWindowSize } from "react-hooks-pack";
 
 function Example() {
-  const { width, height } = useWindowSize();
+  const { innerWidth, innerHeight } = useWindowSize();
 
   return (
     <div>
-      <p>Width: {width}</p>
-      <p>Height: {height}</p>
+      <p>Width: {innerWidth}</p>
+      <p>Height: {innerHeight}</p>
     </div>
   );
 }
@@ -25,8 +25,8 @@ function Example() {
 ```ts
 import { useWindowSize } from "react-hooks-pack";
 
-const { width, height } = useWindowSize();
+const { innerWidth, innerHeight } = useWindowSize();
 ```
 
-- **`width`**_`: number`_ &mdash; Window width;
-- **`height`**_`: number`_ &mdash; Window height;
+- **`innerWidth`**_`: number`_ &mdash; Width of windows;
+- **`innerHeight`**_`: number`_ &mdash; Height of window;

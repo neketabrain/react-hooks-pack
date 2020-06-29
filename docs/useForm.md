@@ -1,6 +1,6 @@
 # `useForm`
 
-The UseForm hook can help you when working with form.
+The UseForm hook can help when you work with form.
 
 ## Usage
 
@@ -8,20 +8,14 @@ The UseForm hook can help you when working with form.
 import React from "react";
 import { useForm, UseFormErrors } from "react-hooks-pack";
 
-interface Values {
-  nickname: string;
-  email: string;
-  check: boolean;
-}
-
-const initialValues: Values = {
+const initialValues = {
   nickname: "neketabrain",
   email: "",
   check: false,
 };
 
-function validate(values: Values) {
-  const errors: UseFormErrors<Values> = {};
+const validate = (values: typeof initialValues) => {
+  const errors: UseFormErrors<typeof initialValues> = {};
 
   if (!values.email) {
     errors.email = "Required";
@@ -32,26 +26,30 @@ function validate(values: Values) {
   }
 
   return errors;
-}
+};
 
-function handleSubmit(values: Values, errors: UseFormErrors<Values>) {
+const handleSubmit = (
+  values: typeof initialValues,
+  errors: UseFormErrors<typeof initialValues>
+) => {
   if (errors) {
     console.log("errors: ", errors);
   }
 
   console.log("values: ", values);
-}
+};
 
-function Example() {
-  const { values, errors, touched, onChange, onBlur, onSubmit } = useForm({
+const Example: React.FC = () => {
+  const { values, errors, onChange, onBlur, onSubmit, isSubmitting } = useForm(
     initialValues,
     handleSubmit,
     validate,
-    options: {
+    {
+      clearOnChange: false,
       validateOnBlur: false,
-      validateOnSubmit: true,
-    },
-  });
+      validateOnMount: true,
+    }
+  );
 
   return (
     <form onSubmit={onSubmit}>
@@ -60,25 +58,33 @@ function Example() {
         onBlur={onBlur}
         value={values.nickname}
         onChange={onChange}
+        disabled={isSubmitting}
       />
+
       <input
         name="email"
         type="email"
         onBlur={onBlur}
         value={values.email}
         onChange={onChange}
+        disabled={isSubmitting}
       />
+
       <input
         name="check"
         type="checkbox"
         onBlur={onBlur}
         checked={values.check}
         onChange={onChange}
+        disabled={isSubmitting}
       />
-      <button type="submit">click</button>
+
+      <button type="submit" disabled={isSubmitting}>
+        click
+      </button>
     </form>
   );
-}
+};
 ```
 
 ## Reference
@@ -86,20 +92,21 @@ function Example() {
 ```ts
 import { useForm, UseFormErrors } from "react-hooks-pack";
 
-const { values, errors, touched, onChange, onBlur, onSubmit } = useForm<T>({
+const { values, errors, touched, onChange, onBlur, onSubmit } = useForm<T>(
   initialValues: T,
   handleSubmit: (values: T, errors: UseFormErrors<T>) => void,
   validate?: (values: T) => UseFormErrors<T>,
-  options?: {
+  {
+    clearOnChange?: boolean,
     validateOnBlur?: boolean,
-    validateOnSubmit?: boolean,
+    validateOnMount?: boolean,
   },
-});
+);
 ```
 
 - **`values`**_`: T`_ &mdash; Current values;
-- **`errors`**_`: { [name in keyof Partial<T>]: string } | null`_ &mdash; Validation errors. Available if validation method is declared;
-- **`touched`**_`: { [name in keyof Partial<T>]: boolean }`_ &mdash; Object with the name of inputs that you touched;
-- **`onChange`**_`: (event: React.ChangeEvent<HTMLInputElement> | Partial<T>) => void`_ &mdash; Method for changing values;
+- **`errors`**_`: { [name in keyof Partial<T>]: any } | null`_ &mdash; Validation errors. Available if validation method is declared;
+- **`isSubmitting`**_`: boolean`_ &mdash; Indicates when onSubmit is running;
+- **`onChange`**_`: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | Partial<T>) => void`_ &mdash; Method for changing values;
 - **`onSubmit`**_`: (event: React.FormEvent<HTMLFormElement>) => void`_ &mdash; Submit method;
-- **`onBlur`**_`: (event: React.ChangeEvent<HTMLInputElement>) => void`_ &mdash; Required for validation after a blur event and for getting the touched object;
+- **`onBlur`**_`: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void`_ &mdash; Required for validation after a blur event;

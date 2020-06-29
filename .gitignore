@@ -2,9 +2,8 @@ node_modules
 /.pnp
 .pnp.js
 
-build
-dist
 lib
+esm
 coverage
 
 npm-debug.log*

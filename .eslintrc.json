@@ -1,58 +1,85 @@
 {
+  "root": true,
+  "parser": "babel-eslint",
   "env": {
+    "es6": true,
+    "jest": true,
     "browser": true,
-    "node": true,
-    "es2020": true
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
+    "node": true
   },
   "extends": [
-    "airbnb-base",
     "eslint:recommended",
-    "plugin:prettier/recommended"
+    "prettier",
+    "prettier/babel",
+    "plugin:import/errors",
+    "plugin:import/warnings"
   ],
+  "plugins": ["babel", "prettier", "import"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "rules": {
+    "strict": "off",
     "quotes": ["error", "double"],
-    "consistent-return": "off",
-    "global-require": "off",
-    "import/extensions": "off",
-    "import/no-unresolved": "off",
-    "import/prefer-default-export": "off",
-    "import/no-extraneous-dependencies": "off"
+    "semi": ["error", "always"],
+    "no-unused-vars": "warn",
+    "prettier/prettier": "error",
+    "max-len": [
+      "warn",
+      {
+        "ignoreComments": true,
+        "code": 120
+      }
+    ],
+    "no-multi-spaces": "error",
+    "no-console": "warn",
+    "import/named": "off",
+    "import/order": [
+      "error",
+      {
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "groups": [
+          ["builtin", "external"],
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "always"
+      }
+    ]
   },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
-        "project": "./tsconfig.json",
-        "createDefaultProgram": true,
         "sourceType": "module",
-        "ecmaVersion": 2020,
         "ecmaFeatures": {
-          "jsx": true
-        }
+          "jsx": true,
+          "modules": true
+        },
+        "project": "./tsconfig.json"
       },
-      "extends": [
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
-      ],
       "plugins": ["@typescript-eslint"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "prettier/@typescript-eslint",
+        "plugin:react-hooks/recommended",
+        "plugin:import/typescript"
+      ],
       "rules": {
-        "@typescript-eslint/interface-name-prefix": [
-          "error",
-          {
-            "prefixWithI": "never"
-          }
-        ],
-        "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/unbound-method": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "@typescript-eslint/ban-ts-ignore": "off"
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/no-implied-eval": "off",
+        "@typescript-eslint/no-unsafe-return": "off"
       }
     }
   ]
