@@ -1,10 +1,13 @@
 import {
+  and,
+  assoc,
   call,
   compose,
-  has,
+  dissoc,
   identity,
   ifElse,
   isEmpty,
+  isNil,
   mergeRight,
   objOf,
   pathOr,
@@ -19,8 +22,18 @@ import {
   UseFormValidate,
 } from "./useForm.types";
 
-// isSyntheticEvent :: OnChangeEvent -> Boolean
-export const isSyntheticEvent = has("target");
+// checkObject :: a -> (a | Null)
+const checkObject = <T extends Object>(object: T): T | null =>
+  ifElse(
+    isEmpty,
+    () => null,
+    () => object
+  )(object);
+
+// isSyntheticEvent :: (ManualChangeEvent | OnChangeEvent) -> Boolean
+export const isSyntheticEvent = <T>(
+  event: ManualChangeEvent<T> | OnChangeEvent
+): event is OnChangeEvent => "target" in event;
 
 // base :: OnChangeEvent -> String
 const base = pathOr("", ["target", "value"]);
@@ -54,14 +67,29 @@ export const updateValues = <T extends {}>(
     mergeRight(values)
   );
 
-// validateValues :: (Boolean, a -> UseFormErrors | Undefined) -> UseFormErrors | Undefined
+// validateValues :: (UseFormErrors, Boolean, (a -> UseFormErrors | Undefined)) -> (a -> UseFormErrors | Undefined)
 export const validateValues = <T>(
-  hasValidation: boolean,
+  errors: UseFormErrors<T>,
+  shouldValidate: boolean,
   onValidate?: UseFormValidate<T>
 ): ((values: T) => UseFormErrors<T>) =>
-  !!onValidate && hasValidation
+  !!onValidate && shouldValidate
     ? compose(
         ifElse(isEmpty, () => null, identity),
         onValidate
       )
-    : () => null;
+    : () => errors;
+
+// checkValidatedValue :: (UseFormErrors, String) -> (UseFormErrors -> UseFormErrors)
+export const checkValidatedValue = <T>(
+  prevErrors: UseFormErrors<T>,
+  name: string
+) => <P>(errors: UseFormErrors<P>): UseFormErrors<P> =>
+  compose(
+    ifElse(
+      (error) => and(!isEmpty(error), !isNil(error)),
+      (error) => assoc(name, error, prevErrors),
+      () => checkObject(dissoc(name, prevErrors))
+    ),
+    propOr(null, name)
+  )(errors);
