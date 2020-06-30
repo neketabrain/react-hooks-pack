@@ -7,6 +7,7 @@ Call force re-render.
 ```tsx
 import React from "react";
 import { useForceUpdate } from "react-hooks-pack";
+import { useForceUpdate } from "react-hooks-pack/esm"; //ES6 modules
 
 function Example() {
   const forceUpdate = useForceUpdate();
@@ -19,6 +20,7 @@ function Example() {
 
 ```ts
 import { useForceUpdate } from "react-hooks-pack";
+import { useForceUpdate } from "react-hooks-pack/esm"; //ES6 modules
 
 const forceUpdate = useDebounce();
 ```

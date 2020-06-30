@@ -7,6 +7,7 @@ Return width and height of window. Values will update after every window resize 
 ```tsx
 import React from "react";
 import { useWindowSize } from "react-hooks-pack";
+import { useWindowSize } from "react-hooks-pack/esm"; //ES6 modules
 
 function Example() {
   const { innerWidth, innerHeight } = useWindowSize();
@@ -24,6 +25,7 @@ function Example() {
 
 ```ts
 import { useWindowSize } from "react-hooks-pack";
+import { useWindowSize } from "react-hooks-pack/esm"; //ES6 modules
 
 const { innerWidth, innerHeight } = useWindowSize();
 ```

@@ -7,13 +7,16 @@ Call function after delay.
 ```tsx
 import React from "react";
 import { useDebounce } from "react-hooks-pack";
+import { useDebounce } from "react-hooks-pack/esm"; //ES6 modules
 
 function Example() {
   const firstDebounce = useDebounce();
   const secondDebounce = useDebounce();
 
   function firstCallback() {
-    console.log("This message will be logged once after 2 seconds if handleChange has not been called for 2 seconds");
+    console.log(
+      "This message will be logged once after 2 seconds if handleChange has not been called for 2 seconds"
+    );
   }
 
   function secondCallback() {
@@ -33,6 +36,7 @@ function Example() {
 
 ```ts
 import { useDebounce } from "react-hooks-pack";
+import { useDebounce } from "react-hooks-pack/esm"; //ES6 modules
 
 const debounce = useDebounce();
 ```

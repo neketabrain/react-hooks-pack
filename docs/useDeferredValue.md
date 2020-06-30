@@ -7,6 +7,7 @@ Update value after delay.
 ```tsx
 import React, { useState } from "react";
 import { useDeferredValue } from "react-hooks-pack";
+import { useDeferredValue } from "react-hooks-pack/esm"; //ES6 modules
 
 function Example() {
   const [value, setValue] = useState("Initial");
@@ -29,6 +30,7 @@ function Example() {
 
 ```ts
 import { useDeferredValue } from "react-hooks-pack";
+import { useDeferredValue } from "react-hooks-pack/esm"; //ES6 modules
 
 const deferredValue = useDeferredValue<T>(value: T, delay: number);
 ```

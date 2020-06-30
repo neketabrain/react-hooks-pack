@@ -7,6 +7,7 @@ The UseForm hook can help when you work with form.
 ```tsx
 import React from "react";
 import { useForm, UseFormErrors } from "react-hooks-pack";
+import { useForm, UseFormErrors } from "react-hooks-pack/esm"; // ES6 modules
 
 const initialValues = {
   nickname: "neketabrain",
@@ -60,7 +61,7 @@ const Example: React.FC = () => {
         onChange={onChange}
         disabled={isSubmitting}
       />
-      <p>{errors.nickname}</p>
+      <p>{errors?.nickname}</p>
 
       <input
         name="email"
@@ -70,7 +71,7 @@ const Example: React.FC = () => {
         onChange={onChange}
         disabled={isSubmitting}
       />
-      <p>{errors.email}</p>
+      <p>{errors?.email}</p>
 
       <input
         name="check"
@@ -80,7 +81,7 @@ const Example: React.FC = () => {
         onChange={onChange}
         disabled={isSubmitting}
       />
-      <p>{errors.check}</p>
+      <p>{errors?.check}</p>
 
       <button type="submit" disabled={isSubmitting}>
         click
@@ -94,6 +95,7 @@ const Example: React.FC = () => {
 
 ```ts
 import { useForm, UseFormErrors } from "react-hooks-pack";
+import { useForm, UseFormErrors } from "react-hooks-pack/esm"; // ES6 modules
 
 const { values, errors, touched, onChange, onBlur, onSubmit } = useForm<T>(
   initialValues: T,
