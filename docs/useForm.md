@@ -60,6 +60,7 @@ const Example: React.FC = () => {
         onChange={onChange}
         disabled={isSubmitting}
       />
+      <p>{errors.nickname}</p>
 
       <input
         name="email"
@@ -69,6 +70,7 @@ const Example: React.FC = () => {
         onChange={onChange}
         disabled={isSubmitting}
       />
+      <p>{errors.email}</p>
 
       <input
         name="check"
@@ -78,6 +80,7 @@ const Example: React.FC = () => {
         onChange={onChange}
         disabled={isSubmitting}
       />
+      <p>{errors.check}</p>
 
       <button type="submit" disabled={isSubmitting}>
         click
