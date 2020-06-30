@@ -6,7 +6,7 @@ import { WindowSize } from "./useWindowSize.types";
 const RESIZE = "resize";
 
 const windowsSize = (): WindowSize =>
-  pick(["innerWidth", "innerHeight"], window);
+  pick(["innerHeight", "innerWidth"], window);
 
 const useWindowSize = (): WindowSize => {
   const [size, setSize] = useState<WindowSize>(windowsSize);
@@ -16,7 +16,7 @@ const useWindowSize = (): WindowSize => {
     window.addEventListener(RESIZE, updateSize);
 
     return () => window.removeEventListener(RESIZE, updateSize);
-  }, []);
+  }, [setSize]);
 
   return size;
 };

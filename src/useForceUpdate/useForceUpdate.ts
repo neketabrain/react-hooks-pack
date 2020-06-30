@@ -6,7 +6,7 @@ import { VoidFunction } from "../types";
 const useForceUpdate = (): VoidFunction => {
   const [, setState] = useState<number>(0);
 
-  return useCallback(() => setState(inc), []);
+  return useCallback(() => setState(inc), [setState]);
 };
 
 export default useForceUpdate;

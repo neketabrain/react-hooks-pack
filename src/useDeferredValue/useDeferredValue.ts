@@ -10,7 +10,7 @@ const useDeferredValue = <T>(value: T, delay: number): T => {
     timer.current = window.setTimeout(() => setDeferredValue(value), delay);
 
     return () => window.clearTimeout(timer.current);
-  }, [value, delay]);
+  }, [delay, setDeferredValue, value]);
 
   return deferredValue;
 };

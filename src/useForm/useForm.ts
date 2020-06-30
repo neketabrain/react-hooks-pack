@@ -52,7 +52,7 @@ const useForm = <T extends Object>(
         )(values);
       }
     },
-    [errors, onValidate, validateOnBlur, values]
+    [errors, onValidate, setErrors, validateOnBlur, values]
   );
 
   const onChange = useCallback(
@@ -65,7 +65,7 @@ const useForm = <T extends Object>(
         )();
       }
     },
-    [clearOnChange, errors, values]
+    [clearOnChange, errors, setErrors, setValues, values]
   );
 
   const onSubmit = useCallback(
@@ -83,7 +83,15 @@ const useForm = <T extends Object>(
         validateValues(errors, validateOnSubmit, onValidate)
       )(values);
     },
-    [errors, handleSubmit, onValidate, validateOnSubmit, values]
+    [
+      errors,
+      handleSubmit,
+      onValidate,
+      setErrors,
+      setSubmitting,
+      validateOnSubmit,
+      values,
+    ]
   );
 
   return { errors, isSubmitting, onBlur, onChange, onSubmit, values };

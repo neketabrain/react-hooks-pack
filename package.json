@@ -1,6 +1,6 @@
 {
   "name": "react-hooks-pack",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Package of custom React hooks",
   "publishConfig": {
     "access": "public"
@@ -34,7 +34,7 @@
     "lint:types": "tsc --noEmit",
     "build:cjs": "tsc -p tsconfig.build.json",
     "build:es": "tsc -m esNext --outDir esm -p tsconfig.build.json",
-    "build": "yarn build:cjs && yarn build:es",
+    "build": "yarn clean && yarn build:cjs && yarn build:es",
     "test": "jest --maxWorkers 2",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
