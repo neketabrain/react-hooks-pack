@@ -28,7 +28,7 @@ const validate = (values: typeof initialValues) => {
   return errors;
 };
 
-const handleSubmit = (
+const handleSubmit = async (
   values: typeof initialValues,
   errors: UseFormErrors<typeof initialValues>
 ) => {
@@ -94,7 +94,7 @@ import { useForm, UseFormErrors } from "react-hooks-pack";
 
 const { values, errors, touched, onChange, onBlur, onSubmit } = useForm<T>(
   initialValues: T,
-  handleSubmit: (values: T, errors: UseFormErrors<T>) => void,
+  handleSubmit: (values: T, errors: UseFormErrors<T>) => Promise<void>,
   validate?: (values: T) => UseFormErrors<T>,
   {
     clearOnChange?: boolean,

@@ -24,8 +24,8 @@ yarn add react-hooks-pack
 
 ## Hooks
 
-- [useDebounce](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useDebounce.md) - delay the calling of function\
-- [useDeferredValue](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useDeferredValue.md) - delay the changing of value\
-- [useForceUpdate](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForceUpdate.md) - call force re-render\
-- [useForm](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForm.md) - form helper\
-- [useWindowSize](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useWindowSize.md) - return width and height of window\
+- [useDebounce](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useDebounce.md) - delay the calling of function
+- [useDeferredValue](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useDeferredValue.md) - delay the changing of value
+- [useForceUpdate](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForceUpdate.md) - call force re-render
+- [useForm](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForm.md) - form helper
+- [useWindowSize](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useWindowSize.md) - return width and height of window

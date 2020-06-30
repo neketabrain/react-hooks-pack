@@ -40,13 +40,9 @@
     "test:coverage": "jest --coverage",
     "deploy": "yarn build && npm publish"
   },
-  "engines": {
-    "node": ">=8",
-    "npm": ">=5"
-  },
   "peerDependencies": {
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   },
   "dependencies": {
     "ramda": "^0.27.0",
@@ -85,14 +81,16 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint && yarn lint:types && lint-staged",
-      "pre-push": "yarn lint && yarn lint:types && yarn test"
+      "pre-commit": "yarn lint:types && lint-staged",
+      "pre-push": "yarn lint:types && yarn test"
     }
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "git add"
+    "*.{js,ts,tsx}": [
+      "yarn lint:fix"
+    ],
+    "*.{md,json,yml}": [
+      "prettier --write"
     ]
   }
 }
