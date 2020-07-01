@@ -22,8 +22,7 @@
     "jsx": "react",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "importHelpers": true
+    "noImplicitReturns": true
   },
   "exclude": ["node_modules", "lib", "esm"]
 }

@@ -3,9 +3,9 @@ import { UseFormErrors } from "../src/useForm";
 import {
   checkObject,
   checkValidatedValue,
+  isSyntheticEvent,
   reduceByType,
   updateValues,
-  validateValues,
 } from "../src/useForm/useForm.utils";
 
 const object = {
@@ -27,7 +27,7 @@ describe("checkValidatedValue", () => {
   test("should exclude path if error is empty", () => {
     const newErrors = { second: "mistake" };
 
-    expect(checkValidatedValue(object, "first")(newErrors)).toStrictEqual(
+    expect(checkValidatedValue(newErrors, object, "first")).toStrictEqual(
       newErrors
     );
   });
@@ -35,33 +35,63 @@ describe("checkValidatedValue", () => {
   test("should update error if it not empty", () => {
     const newErrors = { first: "some error", second: "mistake" };
 
-    expect(checkValidatedValue(object, "first")(newErrors)).toStrictEqual(
+    expect(checkValidatedValue(newErrors, object, "first")).toStrictEqual(
       newErrors
     );
   });
 });
 
-describe("reduceByType", () => {
-  test("should return boolean value if type is checkbox", () => {
-    const mockEvent = ({
-      target: { name: "some", checked: true, type: "checkbox" },
-    } as unknown) as OnChangeEvent;
+describe("isSyntheticEvent", () => {
+  const mockEvent = ({
+    target: { name: "some", checked: false, type: "checkbox" },
+  } as unknown) as OnChangeEvent;
 
-    expect(reduceByType(mockEvent)).toStrictEqual({ some: true });
+  test("should return true if type is ChangeEvent", () => {
+    expect(isSyntheticEvent(mockEvent)).toBeTruthy();
   });
 
-  test("should return string value if type is text", () => {
+  test("should return false if type is ManualChange", () => {
+    expect(isSyntheticEvent({ name: "" })).toBeFalsy();
+  });
+});
+
+describe("reduceByType", () => {
+  test("should return boolean if type is checkbox", () => {
     const mockEvent = ({
-      target: { name: "some", value: "hello world", type: "text" },
+      target: { name: "some", checked: false, type: "checkbox" },
     } as unknown) as OnChangeEvent;
 
-    expect(reduceByType(mockEvent)).toStrictEqual({ some: "hello world" });
+    expect(reduceByType(mockEvent)).toStrictEqual({ some: false });
+  });
+
+  test("should return null if type is file", () => {
+    const mockEvent = ({
+      target: { checked: false, name: "some", files: null, type: "file" },
+    } as unknown) as OnChangeEvent;
+
+    expect(reduceByType(mockEvent)).toStrictEqual({ some: null });
+  });
+
+  test("should return string if type is text", () => {
+    const mockEvent = ({
+      target: { checked: false, name: "some", value: "", type: "text" },
+    } as unknown) as OnChangeEvent;
+
+    expect(reduceByType(mockEvent)).toStrictEqual({ some: "" });
+  });
+
+  test("should return string if field is textarea", () => {
+    const mockEvent = ({
+      target: { name: "some", value: "" },
+    } as unknown) as OnChangeEvent;
+
+    expect(reduceByType(mockEvent)).toStrictEqual({ some: "" });
   });
 });
 
 describe("updateValues", () => {
   test("two objects should be merged", () => {
-    expect(updateValues(object)({ second: "hello" })).toStrictEqual({
+    expect(updateValues(object, { second: "hello" })).toStrictEqual({
       first: "error",
       second: "hello",
     });
@@ -76,7 +106,7 @@ describe("validateValues", () => {
       return newErrors;
     };
 
-    expect(validateValues({}, true, validate)(object)).toStrictEqual({
+    expect(validate(object)).toStrictEqual({
       first: "hello",
     });
   });

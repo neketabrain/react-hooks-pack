@@ -1,4 +1,3 @@
-import { andThen, compose, propOr } from "ramda";
 import { useCallback, useEffect, useState } from "react";
 
 import { OnChangeEvent, OnBlurEvent, OnSubmitEvent } from "../types";
@@ -15,7 +14,6 @@ import {
   checkValidatedValue,
   isSyntheticEvent,
   updateValues,
-  validateValues,
 } from "./useForm.utils";
 
 const useForm = <T extends Object>(
@@ -24,32 +22,33 @@ const useForm = <T extends Object>(
   onValidate?: UseFormValidate<T>,
   options?: UseFormOptions
 ): UseForm<T> => {
-  const clearOnChange: boolean = propOr(true, "clearOnChange", options);
-  const validateOnBlur: boolean = propOr(true, "validateOnBlur", options);
-  const validateOnMount: boolean = propOr(false, "validateOnMount", options);
-  const validateOnSubmit: boolean = propOr(true, "validateOnSubmit", options);
+  const {
+    clearOnChange = true,
+    validateOnBlur = true,
+    validateOnMount = false,
+    validateOnSubmit = true,
+  } = options || {};
 
   const [errors, setErrors] = useState<UseFormErrors<T>>(null);
   const [isSubmitting, setSubmitting] = useState(false);
   const [values, setValues] = useState<T>(initialState);
 
   useEffect(() => {
-    if (validateOnMount) {
-      compose(
-        setErrors,
-        validateValues(errors, validateOnMount, onValidate)
-      )(values);
+    if (validateOnMount && onValidate) {
+      const newErrors = onValidate(values);
+      setErrors(newErrors);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onBlur = useCallback(
     (event: OnBlurEvent) => {
-      if (validateOnBlur) {
-        compose(
-          setErrors,
-          checkValidatedValue(errors, event.target.name),
-          validateValues(errors, validateOnBlur, onValidate)
-        )(values);
+      if (validateOnBlur && onValidate) {
+        const updatedErrors = checkValidatedValue(
+          onValidate(values),
+          errors,
+          event.target.name
+        );
+        setErrors(updatedErrors);
       }
     },
     [errors, onValidate, setErrors, validateOnBlur, values]
@@ -57,12 +56,16 @@ const useForm = <T extends Object>(
 
   const onChange = useCallback(
     (event: OnChangeEvent | ManualChangeEvent<T>) => {
-      compose(setValues, updateValues(values))(event);
+      const updatedValues = updateValues(values, event);
+      setValues(updatedValues);
 
       if (clearOnChange && isSyntheticEvent(event)) {
-        compose(setErrors, () =>
-          checkValidatedValue(errors, event.target.name)(null)
-        )();
+        const updatedErrors = checkValidatedValue(
+          null,
+          errors,
+          event.target.name
+        );
+        setErrors(updatedErrors);
       }
     },
     [clearOnChange, errors, setErrors, setValues, values]
@@ -74,14 +77,16 @@ const useForm = <T extends Object>(
 
       setSubmitting(true);
 
-      await compose(
-        andThen(() => setSubmitting(false)),
-        (errs: UseFormErrors<T>) => {
-          setErrors(errs);
-          return handleSubmit(values, errs);
-        },
-        validateValues(errors, validateOnSubmit, onValidate)
-      )(values);
+      if (validateOnSubmit && onValidate) {
+        const newErrors = onValidate(values);
+        setErrors(newErrors);
+
+        await handleSubmit(values, newErrors);
+      } else {
+        await handleSubmit(values, errors);
+      }
+
+      setSubmitting(false);
     },
     [
       errors,
