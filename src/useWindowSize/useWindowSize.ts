@@ -1,21 +1,16 @@
-import { compose, pick } from "ramda";
 import { useLayoutEffect, useState } from "react";
 
 import { WindowSize } from "./useWindowSize.types";
-
-const RESIZE = "resize";
-
-const windowsSize = (): WindowSize =>
-  pick(["innerHeight", "innerWidth"], window);
+import { getWindowsSize } from "./useWindowSize.utils";
 
 const useWindowSize = (): WindowSize => {
-  const [size, setSize] = useState<WindowSize>(windowsSize);
+  const [size, setSize] = useState<WindowSize>(getWindowsSize);
 
   useLayoutEffect(() => {
-    const updateSize = compose(setSize, windowsSize);
-    window.addEventListener(RESIZE, updateSize);
+    const updateSize = () => setSize(getWindowsSize());
+    window.addEventListener("resize", updateSize);
 
-    return () => window.removeEventListener(RESIZE, updateSize);
+    return () => window.removeEventListener("resize", updateSize);
   }, [setSize]);
 
   return size;
