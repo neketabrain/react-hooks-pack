@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import { OnChangeEvent, OnBlurEvent, OnSubmitEvent } from "../types";
 
 import {
-  ManualChangeEvent,
   UseForm,
   UseFormErrors,
   UseFormOptions,
@@ -12,7 +11,7 @@ import {
 } from "./useForm.types";
 import {
   checkValidatedValue,
-  isSyntheticEvent,
+  objectIsEmpty,
   updateValues,
 } from "./useForm.utils";
 
@@ -55,11 +54,11 @@ const useForm = <T extends Object>(
   );
 
   const onChange = useCallback(
-    (event: OnChangeEvent | ManualChangeEvent<T>) => {
+    (event: OnChangeEvent) => {
       const updatedValues = updateValues(values, event);
       setValues(updatedValues);
 
-      if (clearOnChange && isSyntheticEvent(event)) {
+      if (clearOnChange) {
         const updatedErrors = checkValidatedValue(
           null,
           errors,
@@ -99,7 +98,44 @@ const useForm = <T extends Object>(
     ]
   );
 
-  return { errors, isSubmitting, onBlur, onChange, onSubmit, values };
+  const manualSetErrors = useCallback(
+    (newErrors: UseFormErrors<T>, rewrite?: boolean) => {
+      if (rewrite) {
+        setErrors(objectIsEmpty(newErrors || {}) ? null : newErrors);
+      } else {
+        const updatedErrors = {
+          ...(errors || {}),
+          ...(newErrors || {}),
+        };
+
+        setErrors(objectIsEmpty(updatedErrors) ? null : updatedErrors);
+      }
+    },
+    [errors, setErrors]
+  );
+
+  const manualSetValues = useCallback(
+    (newValues: Partial<T>) => {
+      const updatedValues = {
+        ...values,
+        ...newValues,
+      };
+
+      setValues(updatedValues);
+    },
+    [setValues, values]
+  );
+
+  return {
+    errors,
+    isSubmitting,
+    onBlur,
+    onChange,
+    onSubmit,
+    setErrors: manualSetErrors,
+    setValues: manualSetValues,
+    values,
+  };
 };
 
 export default useForm;

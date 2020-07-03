@@ -3,7 +3,7 @@ import { UseFormErrors } from "../src/useForm";
 import {
   checkObject,
   checkValidatedValue,
-  isSyntheticEvent,
+  objectIsEmpty,
   reduceByType,
   updateValues,
 } from "../src/useForm/useForm.utils";
@@ -41,17 +41,13 @@ describe("checkValidatedValue", () => {
   });
 });
 
-describe("isSyntheticEvent", () => {
-  const mockEvent = ({
-    target: { name: "some", checked: false, type: "checkbox" },
-  } as unknown) as OnChangeEvent;
-
-  test("should return true if type is ChangeEvent", () => {
-    expect(isSyntheticEvent(mockEvent)).toBeTruthy();
+describe("objectIsEmpty", () => {
+  test("should return true if object is empty", () => {
+    expect(objectIsEmpty({})).toBeTruthy();
   });
 
-  test("should return false if type is ManualChange", () => {
-    expect(isSyntheticEvent({ name: "" })).toBeFalsy();
+  test("should return false if object not empty", () => {
+    expect(objectIsEmpty({ value: "hello" })).toBeFalsy();
   });
 });
 
@@ -90,8 +86,12 @@ describe("reduceByType", () => {
 });
 
 describe("updateValues", () => {
-  test("two objects should be merged", () => {
-    expect(updateValues(object, { second: "hello" })).toStrictEqual({
+  test("should update property by name", () => {
+    const mockEvent = ({
+      target: { name: "second", value: "hello" },
+    } as unknown) as OnChangeEvent;
+
+    expect(updateValues(object, mockEvent)).toStrictEqual({
       first: "error",
       second: "hello",
     });
