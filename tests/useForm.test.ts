@@ -32,12 +32,12 @@ describe("useForm", () => {
     expect(result.current.values.some).toBe("value");
   });
 
-  test("manual onChange must change values", () => {
+  test("setValues must change values", () => {
     const { result } = renderHook(() => useForm(initialState, handleSubmit));
 
     expect(result.current.values.some).toBe("value");
 
-    void act(() => result.current.onChange({ some: "new value" }));
+    void act(() => result.current.setValues({ some: "new value" }));
     expect(result.current.values.some).toBe("new value");
   });
 
@@ -183,7 +183,7 @@ describe("useForm", () => {
     expect(result.current.errors?.some).toBe("error");
     expect(result.current.errors?.test).toBeUndefined();
 
-    void act(() => result.current.onChange({ some: "new value" }));
+    void act(() => result.current.setValues({ some: "new value" }));
     expect(result.current.errors?.some).toBe("error");
     expect(result.current.errors?.test).toBeUndefined();
 
@@ -228,5 +228,44 @@ describe("useForm", () => {
     void act(() => result.current.onChange(mockEvent));
     expect(result.current.errors?.some).toBe("error");
     expect(result.current.errors?.test).toBeUndefined();
+  });
+
+  test("should rewrite errors if flag rewrite is true", () => {
+    const { result } = renderHook(() =>
+      useForm(initialState, handleSubmit, validate, {
+        validateOnMount: true,
+      })
+    );
+
+    expect(result.current.errors?.some).toBe("error");
+    expect(result.current.errors?.test).toBeUndefined();
+
+    void act(() => result.current.setErrors({ test: "second" }, true));
+    expect(result.current.errors?.some).toBeUndefined();
+    expect(result.current.errors?.test).toBe("second");
+  });
+
+  test("should update errors if flag rewrite is false", () => {
+    const { result } = renderHook(() =>
+      useForm(initialState, handleSubmit, validate, {
+        validateOnMount: true,
+      })
+    );
+
+    expect(result.current.errors?.some).toBe("error");
+    expect(result.current.errors?.test).toBeUndefined();
+
+    void act(() => result.current.setErrors({ test: "second" }, false));
+    expect(result.current.errors?.some).toBe("error");
+    expect(result.current.errors?.test).toBe("second");
+  });
+
+  test("should set null to errors if errors and new errors is empty", () => {
+    const { result } = renderHook(() => useForm(initialState, handleSubmit));
+
+    expect(result.current.errors).toBeNull();
+
+    void act(() => result.current.setErrors({}));
+    expect(result.current.errors).toBeNull();
   });
 });

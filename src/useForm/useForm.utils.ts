@@ -5,8 +5,6 @@ import {
   TextAreaOnChangeEvent,
 } from "../types";
 
-import { ManualChangeEvent } from "./useForm.types";
-
 const excludeProp = <T>(object: T, name: string): T => {
   const newObject = { ...object };
   delete newObject[name as keyof T];
@@ -14,7 +12,7 @@ const excludeProp = <T>(object: T, name: string): T => {
   return newObject;
 };
 
-const objectIsEmpty = <T extends Object>(object: T): boolean =>
+export const objectIsEmpty = <T extends Object>(object: T | {}): object is {} =>
   Object.keys(object).length === 0;
 
 export const checkObject = <T extends Object>(object: T): T | null =>
@@ -33,10 +31,6 @@ export const checkValidatedValue = <T, P>(
 
   return { ...prevErrors, [name]: error };
 };
-
-export const isSyntheticEvent = <T>(
-  event: ManualChangeEvent<T> | OnChangeEvent
-): event is OnChangeEvent => "target" in event;
 
 const isTextAreaEvent = (
   event: InputOnChangeEvent | TextAreaOnChangeEvent
@@ -70,11 +64,7 @@ export const reduceByType = (
 
 export const updateValues = <T extends Object>(
   values: T,
-  event: ManualChangeEvent<T> | OnChangeEvent
+  event: OnChangeEvent
 ): T => {
-  if (isSyntheticEvent(event)) {
-    return { ...values, ...reduceByType(event) };
-  }
-
-  return { ...values, ...event };
+  return { ...values, ...reduceByType(event) };
 };
