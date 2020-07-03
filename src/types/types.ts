@@ -4,8 +4,9 @@ export type InputOnChangeEvent = ChangeEvent<HTMLInputElement>;
 
 export type InputValue = string | boolean | FileList | null;
 
-export type OnBlurEvent = FocusEvent<HTMLInputElement> &
-  FocusEvent<HTMLTextAreaElement>;
+export type OnBlurEvent =
+  | FocusEvent<HTMLInputElement>
+  | FocusEvent<HTMLTextAreaElement>;
 
 export type OnSubmitEvent = FormEvent<HTMLFormElement>;
 
