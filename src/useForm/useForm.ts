@@ -10,6 +10,7 @@ import {
   UseFormValidate,
 } from "./useForm.types";
 import {
+  checkObject,
   checkValidatedValue,
   objectIsEmpty,
   updateValues,
@@ -77,7 +78,7 @@ const useForm = <T extends Object>(
       setSubmitting(true);
 
       if (validateOnSubmit && onValidate) {
-        const newErrors = onValidate(values);
+        const newErrors = checkObject(onValidate(values));
         setErrors(newErrors);
 
         await handleSubmit(values, newErrors);

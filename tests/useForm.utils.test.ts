@@ -14,6 +14,10 @@ const object = {
 };
 
 describe("checkObject", () => {
+  test("should return null if argument is null or undefined", () => {
+    expect(checkObject(null)).toBeNull();
+  });
+
   test("should return null if object is empty", () => {
     expect(checkObject({})).toBeNull();
   });

@@ -12,11 +12,14 @@ const excludeProp = <T>(object: T, name: string): T => {
   return newObject;
 };
 
-export const objectIsEmpty = <T extends Object>(object: T | {}): object is {} =>
+export const objectIsEmpty = <T>(object: T | {}): object is {} =>
   Object.keys(object).length === 0;
 
-export const checkObject = <T extends Object>(object: T): T | null =>
-  objectIsEmpty(object) ? null : object;
+export const checkObject = <T>(object: T): T | null => {
+  if (!object) return null;
+
+  return objectIsEmpty(object) ? null : object;
+};
 
 export const checkValidatedValue = <T, P>(
   errors: T,
