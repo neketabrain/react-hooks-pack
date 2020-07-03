@@ -118,4 +118,4 @@ const { values, errors, touched, onChange, onBlur, onSubmit, setValues, setError
 - **`onSubmit`**_`: (event: React.FormEvent<HTMLFormElement>) => void`_ &mdash; Submit method;
 - **`onBlur`**_`: (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLTextAreaElement>) => void`_ &mdash; Required for validation after a blur event;
 - **`setValues`**_`: (values: Partial<T>) => void`_ &mdash; Manual change values;
-- **`setErrors`**_`: (errors: [name in keyof Partial<T>]: any } | null) => void`_ &mdash; Manual change errors;
+- **`setErrors`**_`: (errors: [name in keyof Partial<T>]: any } | null, rewrite?: boolean) => void`_ &mdash; Manual change errors;
