@@ -1,7 +1,5 @@
 import { useCallback, useState } from "react";
 
-import { VoidFunction } from "../types";
-
 const useForceUpdate = (): VoidFunction => {
   const [, setState] = useState<number>(0);
 

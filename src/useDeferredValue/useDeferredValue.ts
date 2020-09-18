@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Timeout } from "../types";
+import { Timer } from "../types";
 
 const useDeferredValue = <T>(value: T, delay: number): T => {
   const [deferredValue, setDeferredValue] = useState(value);
-  const timer = useRef<Timeout>();
+  const timer = useRef<Timer>();
 
   useEffect(() => {
     timer.current = window.setTimeout(() => setDeferredValue(value), delay);

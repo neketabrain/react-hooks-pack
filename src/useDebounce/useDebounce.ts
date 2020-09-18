@@ -1,11 +1,11 @@
 import { useCallback, useRef } from "react";
 
-import { Timeout } from "../types";
+import { Timer } from "../types";
 
 import { Debounce } from "./useDebounce.types";
 
 const useDebounce = (): Debounce => {
-  const timer = useRef<Timeout>(undefined);
+  const timer = useRef<Timer>(undefined);
 
   return useCallback((callback, delay) => {
     window.clearTimeout(timer.current);
