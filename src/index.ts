@@ -1,3 +1,4 @@
+export * from "./useClickOutside";
 export * from "./useDebounce";
 export * from "./useDeferredValue";
 export * from "./useForceUpdate";
