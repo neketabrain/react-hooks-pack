@@ -29,3 +29,4 @@ yarn add react-hooks-pack
 - [useForceUpdate](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForceUpdate.md) - call force re-render
 - [useForm](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useForm.md) - form helper
 - [useWindowSize](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useWindowSize.md) - return width and height of window
+- [useClickOutside](https://github.com/neketabrain/react-hooks-pack/blob/master/docs/useClickOutside.md) - detect clicks outside of a specified element
